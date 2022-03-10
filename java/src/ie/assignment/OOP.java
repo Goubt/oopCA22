@@ -4,12 +4,14 @@ import damkjer.ocd.*;
 
 import processing.core.PApplet;
 
+
 public class OOP extends PApplet
 {
-
+	
 	float rotation = 0;
 	float direction = 0;
 	Camera camera1;
+	
 
 	public void settings()
 	{
@@ -49,17 +51,25 @@ public class OOP extends PApplet
 		stroke(0,0,255);
 		noFill();
 		box(200);
-		
+		if (direction > 0) {
+			RotateRight();
+			direction--;
+		}
+		if (direction < 0) {
+			RotateLeft();
+			direction++;
+		}
 		
 	}
 	public void RotateRight(){
-		float rotate;
-		rotate = lerp(0, 90, 1);
-		camera1.look((float) (radians((float) (rotate))), 0);
+		
+		camera1.look((float) (radians((float) (1))), 0);
+		
 	}
 
 	public void RotateLeft(){
-		direction = -900;
+	
+		camera1.look(-(float) (radians((float) (1))), 0);
 	}
 
 	public void DrawSphere(){
@@ -72,10 +82,10 @@ public class OOP extends PApplet
 
 	public void keyPressed() {
 		if (keyCode == LEFT) {
-			RotateLeft();
+			direction -= 90;
 		}
 		if (keyCode == RIGHT) {
-			RotateRight();
+			direction += 90;
 		}
 		if (keyCode == ' ')
 		{
