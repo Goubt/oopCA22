@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Main",
+            "request": "launch",
+            "mainClass": "ie.assignment.Main",
+            "projectName": "java (2)"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Main",
+            "request": "launch",
+            "mainClass": "ie.tudublin.Main",
+            "projectName": "java"
+        }
+    ]
+}
