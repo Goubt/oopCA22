@@ -22,6 +22,8 @@ public class OOP extends PApplet
     AudioPlayer ay;
     AudioBuffer aby;
 
+    
+
     int mode = 0;
 
     static final int FADE = 2500;
@@ -75,10 +77,10 @@ public class OOP extends PApplet
     {
         minim = new Minim(this); 
         af = minim.loadFile("ONGP.mp3", 1024);
-        af.play();
+        //af.play();
         ab = af.mix;
         ay = minim.loadFile("GUMMY.mp3", 1024);
-        ay.play();
+        //ay.play();
         aby = ay.mix;
         /*
         ay = minim.loadFile("GUMMY.mp3", 1024);
@@ -105,6 +107,8 @@ public class OOP extends PApplet
     {
         switch (Choice) {
             case 0:
+                textSize(100);
+                textAlign(CENTER);
                 background(0);
                 camera1.feed();
                 rectMode(CENTER);
@@ -114,11 +118,11 @@ public class OOP extends PApplet
                 double third = width * 0.866;
                 float move = (float)third;
                 translate(move, 0, width+(width/2));
-                rotateY(PI/3);
+                rotateY(-2*PI/3);
                 yaris();
-                rotateY(-PI/3);
+                rotateY(2*PI/3);
                 translate(-2*move, 0, 0);
-                rotateY(-PI/3);
+                rotateY(2*PI/3);
                 finn();
                 
                 if (direction > 0) {
@@ -154,7 +158,9 @@ public class OOP extends PApplet
 		noFill();
 		box(100);
         rect(0,0,width-100,height-100);
-		
+		if(frameCount % 60 < 40) {
+            text("<Enter>", 0, (height/2)+50);
+        } 
 	}
 
 	public void finn(){
@@ -163,7 +169,9 @@ public class OOP extends PApplet
         noFill();
         box(100);
         rect(0,0,width-100,height-100);
-
+        if(frameCount % 60 < 40) {
+            text("<Enter>", 0, (height/2)+50);
+        }
 	}
 
 	public void gooba(){
@@ -171,7 +179,10 @@ public class OOP extends PApplet
 		noFill();
 		box(100);
         rect(0,0,width-100,height-100);
-
+        if(frameCount % 60 < 40) {
+            text("<Enter>", 0, (height/2)+50);
+        }
+         
 	}
 
     public void RotateRight(){
