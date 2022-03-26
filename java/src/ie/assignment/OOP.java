@@ -13,6 +13,7 @@ public class OOP extends PApplet
     float rotation = 0;
 	float direction = 0;
 	Camera camera1;
+    Camera camera2;
     
     Minim minim;
     AudioPlayer af;
@@ -30,6 +31,8 @@ public class OOP extends PApplet
     float smoothedY = 0;
     float smoothedAmplitude = 0;
 
+    int Choice = 0;
+
     public void keyPressed() {
 		if (keyCode == ' ') {
             if (af.isPlaying()) {
@@ -40,10 +43,10 @@ public class OOP extends PApplet
             }
         }
         if (keyCode == LEFT) {
-			direction -= 90;
+			direction -= 120;
 		}
 		if (keyCode == RIGHT) {
-			direction += 90;
+			direction += 120;
 		}
         if (keyCode == '1') {
             af.shiftGain(0,-30,FADE);
@@ -64,7 +67,8 @@ public class OOP extends PApplet
 
     public void settings()
     {
-        size(1024, 1000, P3D);  
+        size(1200, 1000, P3D);  
+        //fullScreen();
     }
 
     public void setup()
@@ -92,58 +96,52 @@ public class OOP extends PApplet
 							 width/2, height/2, 0,
 							 width/2, height/2, -width,
 							 0, 1, 0);
+
     }
 
     float off = 0;
 
     public void draw()
     {
-        background(0);
-        camera1.feed();
-        translate(0, 0, -width);
-        float halfH = height / 2;
-        float average = 0;
-        float sum = 0;
-        off += 1;
-        // Calculate sum and average of the samples
-        // Also lerp each element of buffer;
-        for(int i = 0 ; i < ab.size() ; i ++)
-        {
-            sum += abs(ab.get(i));
-            lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.05f);
-        }
-        average= sum / (float) ab.size();
-
-        smoothedAmplitude = lerp(smoothedAmplitude, average, 0.1f);
-		background(0);
-                for(int i = 0 ; i < ab.size() ; i ++)
-                {
-                    //float c = map(ab.get(i), -1, 1, 0, 255);
-                    float c = map(i, 0, ab.size(), 0, 255);
-                    stroke(c, c, c);
-                    float f = lerpedBuffer[i] * halfH * 4.0f;
-                    line(i, halfH + f, i, halfH - f);                    
+        switch (Choice) {
+            case 0:
+                background(0);
+                camera1.feed();
+                rectMode(CENTER);
+                
+                translate(width/2, height/2, -width);
+                gooba();
+                double third = width * 0.866;
+                float move = (float)third;
+                translate(move, 0, width+(width/2));
+                rotateY(PI/3);
+                yaris();
+                rotateY(-PI/3);
+                translate(-2*move, 0, 0);
+                rotateY(-PI/3);
+                finn();
+                
+                if (direction > 0) {
+                    RotateRight();
+                    direction--;
                 }
-        //start();
-        translate(width/2, height/2, 0);
-        translate(width, 0, width);
-		yaris();
+                if (direction < 0) {
+                    RotateLeft();
+                    direction++;
+                    
+                }
+                break;
+        
+            case 1: // Gooba
+            break;
 
-		translate(-width, 0, width);
-		finn();
+            case 2: // Yaris
+            break;
 
-		translate(-width, 0, -width);
-		gooba();
-
-        if (direction > 0) {
-			RotateRight();
-			direction--;
-		}
-		if (direction < 0) {
-			RotateLeft();
-			direction++;
-            
-		}
+            case 3: // Finn
+            break;
+        }
+        
     }
     
     public void start(){
@@ -151,22 +149,29 @@ public class OOP extends PApplet
 	}
     
     public void yaris(){
+        
 		stroke(255,0,0);
 		noFill();
-		box(200);
+		box(100);
+        rect(0,0,width-100,height-100);
 		
 	}
 
 	public void finn(){
+        
 		stroke(0,255,0);
         noFill();
-        box(200);
+        box(100);
+        rect(0,0,width-100,height-100);
+
 	}
 
 	public void gooba(){
 		stroke(0,0,255);
 		noFill();
-		box(200);
+		box(100);
+        rect(0,0,width-100,height-100);
+
 	}
 
     public void RotateRight(){
