@@ -124,6 +124,14 @@ public class OOP extends PApplet
                 translate(-2*move, 0, 0);
                 rotateY(2*PI/3);
                 finn();
+                hint(DISABLE_DEPTH_TEST);
+                camera();
+                noLights();
+                if(frameCount % 60 < 40 && direction == 0) {
+                    text("<Enter>", width/2, (height)-50);
+                }
+                // 2D code
+                hint(ENABLE_DEPTH_TEST);
                 
                 if (direction > 0) {
                     RotateRight();
@@ -157,10 +165,7 @@ public class OOP extends PApplet
 		stroke(255,0,0);
 		noFill();
 		box(100);
-        rect(0,0,width-100,height-100);
-		if(frameCount % 60 < 40) {
-            text("<Enter>", 0, (height/2)+50);
-        } 
+        rect(0,0,width-100,height-100); 
 	}
 
 	public void finn(){
@@ -169,9 +174,6 @@ public class OOP extends PApplet
         noFill();
         box(100);
         rect(0,0,width-100,height-100);
-        if(frameCount % 60 < 40) {
-            text("<Enter>", 0, (height/2)+50);
-        }
 	}
 
 	public void gooba(){
@@ -179,9 +181,6 @@ public class OOP extends PApplet
 		noFill();
 		box(100);
         rect(0,0,width-100,height-100);
-        if(frameCount % 60 < 40) {
-            text("<Enter>", 0, (height/2)+50);
-        }
          
 	}
 
