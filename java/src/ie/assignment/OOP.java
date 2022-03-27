@@ -16,11 +16,13 @@ public class OOP extends PApplet
     Camera camera2;
     
     Minim minim;
-    AudioPlayer af;
     AudioInput ai;
-    AudioBuffer ab;
+    AudioPlayer af;
+    AudioBuffer abf;
     AudioPlayer ay;
     AudioBuffer aby;
+    AudioPlayer ag;
+    AudioBuffer abg;
 
     
 
@@ -34,35 +36,55 @@ public class OOP extends PApplet
     float smoothedAmplitude = 0;
 
     int Choice = 0;
+    int Menu = 9;
 
     public void keyPressed() {
-		if (keyCode == ' ') {
-            if (af.isPlaying()) {
-                af.pause();
-            } else {
-                af.rewind();
-                af.play();
-            }
-        }
-        if (keyCode == LEFT) {
+        if (keyCode == LEFT && direction == 0) {
 			direction -= 120;
+            Menu--;
+            
+            if (Menu%3 == 0) {
+                ay.shiftGain(0,-50,FADE);
+                
+                ag.shiftGain(-50,0,FADE);
+            }
+            else if (Menu%3 == 1) {
+                af.shiftGain(0,-50,FADE);
+                
+                ay.shiftGain(-50,0,FADE);
+            }
+            else {
+                ag.shiftGain(0,-50,FADE);
+                
+                af.shiftGain(-50,0,FADE);
+                
+            }
+            print(Menu);
 		}
-		if (keyCode == RIGHT) {
+		if (keyCode == RIGHT && direction == 0) {
 			direction += 120;
+            Menu++;
+            
+            if (Menu%3 == 0) {
+                af.shiftGain(0,-50,FADE);
+                
+                ag.shiftGain(-50,0,FADE);
+            }
+            else if (Menu%3 == 1) {
+                ag.shiftGain(0,-50,FADE);
+                
+                ay.shiftGain(-50,0,FADE);
+            }
+            else {
+                ay.shiftGain(0,-50,FADE);
+                
+                af.shiftGain(-50,0,FADE);
+            }
+            print(Menu);    
 		}
-        if (keyCode == '1') {
-            af.shiftGain(0,-30,FADE);
-            ay.shiftGain(-30,0,FADE);
-        }
-        if (keyCode == '2') {
-            af.shiftGain(-30,0,FADE);
-            ay.shiftGain(0,-30,FADE);
-        }
-        if (keyCode == '3') {
-            af.setGain(3);
-        }
-        if (keyCode == '4') {
-            af.setGain(4);
+        if (key == ENTER) {
+            
+            Choice = Menu%3;
         }
 
 	}
@@ -77,16 +99,15 @@ public class OOP extends PApplet
     {
         minim = new Minim(this); 
         af = minim.loadFile("ONGP.mp3", 1024);
-        //af.play();
-        ab = af.mix;
-        ay = minim.loadFile("GUMMY.mp3", 1024);
-        //ay.play();
-        aby = ay.mix;
-        /*
+        af.play();
+        abf = af.mix;
         ay = minim.loadFile("GUMMY.mp3", 1024);
         ay.play();
         aby = ay.mix;
-        */
+        ag = minim.loadFile("POISON.mp3", 1024);
+        ag.play();
+        abg = ag.mix;
+        
         colorMode(RGB);
 
         y = height / 2;
@@ -124,14 +145,15 @@ public class OOP extends PApplet
                 translate(-2*move, 0, 0);
                 rotateY(2*PI/3);
                 finn();
-                hint(DISABLE_DEPTH_TEST);
+
+                hint(DISABLE_DEPTH_TEST); // 2D code starts here
                 camera();
                 noLights();
-                if(frameCount % 60 < 40 && direction == 0) {
+                if(frameCount % 60 < 30 && direction == 0) {
                     text("<Enter>", width/2, (height)-50);
                 }
-                // 2D code
-                hint(ENABLE_DEPTH_TEST);
+
+                hint(ENABLE_DEPTH_TEST); // 2D code ends here
                 
                 if (direction > 0) {
                     RotateRight();
@@ -142,15 +164,19 @@ public class OOP extends PApplet
                     direction++;
                     
                 }
+                
                 break;
         
             case 1: // Gooba
+            print("Gooba");
             break;
 
             case 2: // Yaris
+            print("Yaris");
             break;
 
             case 3: // Finn
+            print("Finn");
             break;
         }
         
