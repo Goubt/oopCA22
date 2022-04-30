@@ -6,23 +6,24 @@ import ddf.minim.AudioBuffer;
 import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
+import ddf.minim.analysis.BeatDetect;
 import processing.core.PApplet;
 
-public class OOP extends PApplet
-{
+public class OOP extends PApplet {
     float rotation = 0;
-	float direction = 0;
-	Camera camera1;
+    float direction = 0;
+    Camera camera1;
     Camera camera2;
-    
+
     Minim minim;
-    AudioPlayer af;
     AudioInput ai;
-    AudioBuffer ab;
+    AudioPlayer af;
+    AudioBuffer abf;
     AudioPlayer ay;
     AudioBuffer aby;
-
-    
+    AudioPlayer ag;
+    AudioBuffer abg;
+    BeatDetect beat;
 
     int mode = 0;
 
@@ -34,59 +35,87 @@ public class OOP extends PApplet
     float smoothedAmplitude = 0;
 
     int Choice = 0;
+    int Menu = 999;
+    int song = 0;
 
     public void keyPressed() {
-		if (keyCode == ' ') {
-            if (af.isPlaying()) {
-                af.pause();
+        if (keyCode == LEFT && direction == 0) {
+            direction -= 120;
+
+            if (Menu % 3 == 1) {
+                ay.shiftGain(0, -50, FADE);
+                ag.shiftGain(-50, 0, FADE);
+                song = 1;
+            } else if (Menu % 3 == 2) {
+                af.shiftGain(0, -50, FADE);
+                ay.shiftGain(-50, 0, FADE);
+                song = 2;
             } else {
-                af.rewind();
-                af.play();
+                ag.shiftGain(0, -50, FADE);
+                af.shiftGain(-50, 0, FADE);
+                song = 3;
+            }
+            Menu--;
+            print(Menu);
+        }
+        if (keyCode == RIGHT && direction == 0) {
+            direction += 120;
+
+            if (Menu % 3 == 2) {
+                af.shiftGain(0, -50, FADE);
+                ag.shiftGain(-50, 0, FADE);
+                song = 1;
+            } else if (Menu % 3 == 0) {
+                ag.shiftGain(0, -50, FADE);
+                ay.shiftGain(-50, 0, FADE);
+                song = 2;
+            } else {
+                ay.shiftGain(0, -50, FADE);
+                af.shiftGain(-50, 0, FADE);
+                song = 3;
+            }
+            Menu++;
+            print(Menu);
+        }
+        if (key == ENTER) {
+
+            Choice = song;
+            if (Choice == 1) {
+                af.pause();
+                ay.pause();
+                ag.pause();
+                // wait(50);
+                ag.play();
+                ag.rewind();
             }
         }
-        if (keyCode == LEFT) {
-			direction -= 120;
-		}
-		if (keyCode == RIGHT) {
-			direction += 120;
-		}
-        if (keyCode == '1') {
-            af.shiftGain(0,-30,FADE);
-            ay.shiftGain(-30,0,FADE);
-        }
-        if (keyCode == '2') {
-            af.shiftGain(-30,0,FADE);
-            ay.shiftGain(0,-30,FADE);
-        }
-        if (keyCode == '3') {
-            af.setGain(3);
-        }
-        if (keyCode == '4') {
-            af.setGain(4);
-        }
 
-	}
-
-    public void settings()
-    {
-        size(1200, 1000, P3D);  
-        //fullScreen();
     }
 
-    public void setup()
-    {
-        minim = new Minim(this); 
-        af = minim.loadFile("ONGP.mp3", 1024);
-        //af.play();
-        ab = af.mix;
-        ay = minim.loadFile("GUMMY.mp3", 1024);
-        //ay.play();
-        aby = ay.mix;
-        /*
-        ay = minim.loadFile("GUMMY.mp3", 1024);
-        ay.play();
-        aby = ay.mix;
-        */
+    public void settings() {
+        size(1200, 1000, P3D);
+        // fullScreen();
+    }
+
+    public void setup() {
+        minim = new Minim(this);
+        //Finn
+        af = minim.loadFile("DARE.mp3", 1024);
+        af.play();
+        abf = af.mix;
+
+        //BeatDetect(1024, 44100.0f)
+        beat = new BeatDetect(af.bufferSize(), af.sampleRate());
+        beat.setSensitivity(900);
+
+        // ay = minim.loadFile("GUMMY.mp3", 1024);
+        // ay.play();
+        // aby = ay.mix;
+
+        // ag = minim.loadFile("POISON.mp3", 1024);
+        // ag.play();
+        // abg = ag.mix;
+
         colorMode(RGB);
 
         y = height / 2;
@@ -94,17 +123,16 @@ public class OOP extends PApplet
 
         lerpedBuffer = new float[width];
 
-        camera1 = new Camera(this, 
-							 width/2, height/2, 0,
-							 width/2, height/2, -width,
-							 0, 1, 0);
+        camera1 = new Camera(this,
+                width / 2, height / 2, 0,
+                width / 2, height / 2, -width,
+                0, 1, 0);
 
     }
 
     float off = 0;
 
-    public void draw()
-    {
+    public void draw() {
         switch (Choice) {
             case 0:
                 textSize(100);
@@ -112,27 +140,27 @@ public class OOP extends PApplet
                 background(0);
                 camera1.feed();
                 rectMode(CENTER);
-                
-                translate(width/2, height/2, -width);
-                gooba();
                 double third = width * 0.866;
-                float move = (float)third;
-                translate(move, 0, width+(width/2));
-                rotateY(-2*PI/3);
+                float move = (float) third;
+                translate(width / 2, height / 2, -width);
+                gooba();
+                translate(move, 0, width + (width / 2));
+                rotateY(-2 * PI / 3);
                 yaris();
-                rotateY(2*PI/3);
-                translate(-2*move, 0, 0);
-                rotateY(2*PI/3);
+                rotateY(2 * PI / 3);
+                translate(-2 * move, 0, 0);
+                rotateY(2 * PI / 3);
                 finn();
-                hint(DISABLE_DEPTH_TEST);
+
+                hint(DISABLE_DEPTH_TEST); // 2D code starts here
                 camera();
                 noLights();
-                if(frameCount % 60 < 40 && direction == 0) {
-                    text("<Enter>", width/2, (height)-50);
+                if (frameCount % 60 < 30 && direction == 0) {
+                    text("<Enter>", width / 2, (height) - 50);
                 }
-                // 2D code
-                hint(ENABLE_DEPTH_TEST);
-                
+
+                hint(ENABLE_DEPTH_TEST); // 2D code ends here
+
                 if (direction > 0) {
                     RotateRight();
                     direction--;
@@ -140,55 +168,106 @@ public class OOP extends PApplet
                 if (direction < 0) {
                     RotateLeft();
                     direction++;
-                    
                 }
+
                 break;
-        
+
             case 1: // Gooba
-            break;
+                print(Choice);
+
+                break;
 
             case 2: // Yaris
-            break;
+                print(Choice);
+                break;
 
             case 3: // Finn
-            break;
+                print(Choice);
+                break;
         }
-        
-    }
-    
-    public void start(){
-        
-	}
-    
-    public void yaris(){
-        
-		stroke(255,0,0);
-		noFill();
-		box(100);
-        rect(0,0,width-100,height-100); 
-	}
 
-	public void finn(){
-        
-		stroke(0,255,0);
+    }
+
+    public void start() {
+
+    }
+
+    public void yaris() {
+
+        stroke(255, 0, 0);
         noFill();
         box(100);
-        rect(0,0,width-100,height-100);
-	}
+        rect(0, 0, width - 100, height - 100);
+    }
 
-	public void gooba(){
-		stroke(0,0,255);
-		noFill();
-		box(100);
-        rect(0,0,width-100,height-100);
-         
-	}
+    public void finn() {
+        
+        BeatDetection fBeat = new BeatDetection();
+        beat.detect(af.mix);
+        print(fBeat.readBeat(beat));
+        
+        
 
-    public void RotateRight(){
-		camera1.look((float) (radians((float) (1))), 0);
-	}
+        
+        stroke(0, 255, 0);
+        noFill();
 
-	public void RotateLeft(){
-		camera1.look(-(float) (radians((float) (1))), 0);
-	}
-}        
+        float halfH = height / 2;
+        float halfW = width / 2;
+        line(-width, 0, width, 0);
+        float average = 0;
+        float sum = 0;
+        off += 1;
+        // Calculate sum and average of the samples
+        // Also lerp each element of buffer;
+        for (int i = 0; i < abf.size(); i++) {
+            sum += abs(abf.get(i));
+            lerpedBuffer[i] = lerp(lerpedBuffer[i], abf.get(i), 0.05f);
+        }
+        average = sum / (float) abf.size();
+
+        smoothedAmplitude = lerp(smoothedAmplitude, average, 0.1f);
+
+        float cx = width / 2;
+        float cy = height / 2;
+
+        // background(0);
+        for (int i = 0; i < abf.size(); i++) {
+            // float c = map(ab.get(i), -1, 1, 0, 255);
+            float c = map(i, 0, abf.size(), 0, 255);
+            stroke(c, 255, 255);
+            float f = lerpedBuffer[i] * halfH * 4.0f;
+            line(i, halfH + f, i, halfH - f);
+        }
+    }
+
+    public void gooba() {
+        stroke(0, 0, 255);
+        noFill();
+        box(100);
+        rect(0, 0, width - 100, height - 100);
+
+    }
+
+    public void RotateRight() {
+        camera1.look((float) (radians((float) (1))), 0);
+    }
+
+    public void RotateLeft() {
+        camera1.look(-(float) (radians((float) (1))), 0);
+    }
+}
+
+class BeatDetection {
+
+    public String readBeat(BeatDetect beat) {
+        
+        if(beat.isKick()) 
+            return "Kick";
+
+        if(beat.isSnare())
+            return "Snare";
+        
+        return "";
+    }
+}
