@@ -38,6 +38,8 @@ public class OOP extends PApplet {
     int Menu = 999;
     int song = 0;
 
+    int screenBrightness = 0;
+
     public void keyPressed() {
         if (keyCode == LEFT && direction == 0) {
             direction -= 120;
@@ -58,6 +60,7 @@ public class OOP extends PApplet {
             Menu--;
             print(Menu);
         }
+
         if (keyCode == RIGHT && direction == 0) {
             direction += 120;
 
@@ -65,11 +68,17 @@ public class OOP extends PApplet {
                 af.shiftGain(0, -50, FADE);
                 ag.shiftGain(-50, 0, FADE);
                 song = 1;
-            } else if (Menu % 3 == 0) {
+
+            }
+
+            else if (Menu % 3 == 0) {
                 ag.shiftGain(0, -50, FADE);
                 ay.shiftGain(-50, 0, FADE);
                 song = 2;
-            } else {
+
+            }
+
+            else {
                 ay.shiftGain(0, -50, FADE);
                 af.shiftGain(-50, 0, FADE);
                 song = 3;
@@ -99,22 +108,21 @@ public class OOP extends PApplet {
 
     public void setup() {
         minim = new Minim(this);
-        //Finn
+        // Finn
         af = minim.loadFile("DARE.mp3", 1024);
-        af.play();
         abf = af.mix;
 
-        //BeatDetect(1024, 44100.0f)
+        // BeatDetect(1024, 44100.0f)
         beat = new BeatDetect(af.bufferSize(), af.sampleRate());
-        beat.setSensitivity(900);
+        beat.setSensitivity(300);
 
-        // ay = minim.loadFile("GUMMY.mp3", 1024);
-        // ay.play();
-        // aby = ay.mix;
+        ay = minim.loadFile("GUMMY.mp3", 1024);
+        ay.play();
+        aby = ay.mix;
 
-        // ag = minim.loadFile("POISON.mp3", 1024);
-        // ag.play();
-        // abg = ag.mix;
+        ag = minim.loadFile("POISON.mp3", 1024);
+        ag.play();
+        abg = ag.mix;
 
         colorMode(RGB);
 
@@ -137,7 +145,6 @@ public class OOP extends PApplet {
             case 0:
                 textSize(100);
                 textAlign(CENTER);
-                background(0);
                 camera1.feed();
                 rectMode(CENTER);
                 double third = width * 0.866;
@@ -188,10 +195,6 @@ public class OOP extends PApplet {
 
     }
 
-    public void start() {
-
-    }
-
     public void yaris() {
 
         stroke(255, 0, 0);
@@ -201,44 +204,21 @@ public class OOP extends PApplet {
     }
 
     public void finn() {
-        
+        af.play();
+        // takes input of 
         BeatDetection fBeat = new BeatDetection();
         beat.detect(af.mix);
-        print(fBeat.readBeat(beat));
-        
-        
+        Boolean type = fBeat.readBeat((beat));
 
-        
+        background(screenBrightness);
+        screenBrightness = backgroundBeat(type, screenBrightness);
+
+        if (screenBrightness > 10)
+            screenBrightness -= 2;
+
         stroke(0, 255, 0);
         noFill();
 
-        float halfH = height / 2;
-        float halfW = width / 2;
-        line(-width, 0, width, 0);
-        float average = 0;
-        float sum = 0;
-        off += 1;
-        // Calculate sum and average of the samples
-        // Also lerp each element of buffer;
-        for (int i = 0; i < abf.size(); i++) {
-            sum += abs(abf.get(i));
-            lerpedBuffer[i] = lerp(lerpedBuffer[i], abf.get(i), 0.05f);
-        }
-        average = sum / (float) abf.size();
-
-        smoothedAmplitude = lerp(smoothedAmplitude, average, 0.1f);
-
-        float cx = width / 2;
-        float cy = height / 2;
-
-        // background(0);
-        for (int i = 0; i < abf.size(); i++) {
-            // float c = map(ab.get(i), -1, 1, 0, 255);
-            float c = map(i, 0, abf.size(), 0, 255);
-            stroke(c, 255, 255);
-            float f = lerpedBuffer[i] * halfH * 4.0f;
-            line(i, halfH + f, i, halfH - f);
-        }
     }
 
     public void gooba() {
@@ -256,18 +236,23 @@ public class OOP extends PApplet {
     public void RotateLeft() {
         camera1.look(-(float) (radians((float) (1))), 0);
     }
+
+    public int backgroundBeat(Boolean type, int i) {
+            
+        if (type == true) 
+            i += 20;
+        
+        return i;
+    }
 }
 
 class BeatDetection {
 
-    public String readBeat(BeatDetect beat) {
-        
-        if(beat.isKick()) 
-            return "Kick";
+    public Boolean readBeat(BeatDetect beat) {
 
-        if(beat.isSnare())
-            return "Snare";
-        
-        return "";
+        if (beat.isKick())
+            return true;
+
+        return false;
     }
 }
