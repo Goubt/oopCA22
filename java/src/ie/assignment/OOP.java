@@ -17,12 +17,8 @@ public class OOP extends PApplet {
 
     Minim minim;
     AudioInput ai;
-    AudioPlayer af;
-    AudioBuffer abf;
-    AudioPlayer ay;
-    AudioBuffer aby;
-    AudioPlayer ag;
-    AudioBuffer abg;
+    AudioPlayer ap;
+    AudioBuffer ab;
     BeatDetect beat;
 
     int mode = 0;
@@ -35,7 +31,7 @@ public class OOP extends PApplet {
     float smoothedAmplitude = 0;
 
     int Choice = 0;
-    int Menu = 999;
+    int Menu = 0;
     int song = 0;
 
     int screenBrightness = 0;
@@ -44,61 +40,24 @@ public class OOP extends PApplet {
         if (keyCode == LEFT && direction == 0) {
             direction -= 120;
 
-            if (Menu % 3 == 1) {
-                ay.shiftGain(0, -50, FADE);
-                ag.shiftGain(-50, 0, FADE);
-                song = 1;
-            } else if (Menu % 3 == 2) {
-                af.shiftGain(0, -50, FADE);
-                ay.shiftGain(-50, 0, FADE);
-                song = 2;
-            } else {
-                ag.shiftGain(0, -50, FADE);
-                af.shiftGain(-50, 0, FADE);
-                song = 3;
-            }
-            Menu--;
-            print(Menu);
+            if (Menu == 0)
+                Menu = 2;
+
+            else
+                Menu--;
         }
 
         if (keyCode == RIGHT && direction == 0) {
             direction += 120;
 
-            if (Menu % 3 == 2) {
-                af.shiftGain(0, -50, FADE);
-                ag.shiftGain(-50, 0, FADE);
-                song = 1;
+            if (Menu == 2)
+                Menu = 0;
 
-            }
-
-            else if (Menu % 3 == 0) {
-                ag.shiftGain(0, -50, FADE);
-                ay.shiftGain(-50, 0, FADE);
-                song = 2;
-
-            }
-
-            else {
-                ay.shiftGain(0, -50, FADE);
-                af.shiftGain(-50, 0, FADE);
-                song = 3;
-            }
-            Menu++;
-            print(Menu);
-        }
-        if (key == ENTER) {
-
-            Choice = song;
-            if (Choice == 1) {
-                af.pause();
-                ay.pause();
-                ag.pause();
-                // wait(50);
-                ag.play();
-                ag.rewind();
-            }
+            else
+                Menu++;
         }
 
+        println(Menu);
     }
 
     public void settings() {
@@ -108,21 +67,11 @@ public class OOP extends PApplet {
 
     public void setup() {
         minim = new Minim(this);
-        // Finn
-        af = minim.loadFile("DARE.mp3", 1024);
-        abf = af.mix;
+        changeMusic("DARE.mp3");
 
         // BeatDetect(1024, 44100.0f)
-        beat = new BeatDetect(af.bufferSize(), af.sampleRate());
+        beat = new BeatDetect(ap.bufferSize(), ap.sampleRate());
         beat.setSensitivity(300);
-
-        ay = minim.loadFile("GUMMY.mp3", 1024);
-        ay.play();
-        aby = ay.mix;
-
-        ag = minim.loadFile("POISON.mp3", 1024);
-        ag.play();
-        abg = ag.mix;
 
         colorMode(RGB);
 
@@ -136,62 +85,76 @@ public class OOP extends PApplet {
                 width / 2, height / 2, -width,
                 0, 1, 0);
 
+
+        switch (Menu) {
+            case 0:
+                changeMusic("GUMMY.mp3");
+
+            case 1:
+                changeMusic("POISON.mp3");
+
+            case 2:
+                changeMusic("DARE.mp3");
+
+        }
     }
 
     float off = 0;
 
     public void draw() {
-        switch (Choice) {
+
+        textSize(100);
+        textAlign(CENTER);
+        camera1.feed();
+        rectMode(CENTER);
+        double third = width * 0.866;
+        float move = (float) third;
+     
+        switch (Menu) {
             case 0:
-                textSize(100);
-                textAlign(CENTER);
-                camera1.feed();
-                rectMode(CENTER);
-                double third = width * 0.866;
-                float move = (float) third;
                 translate(width / 2, height / 2, -width);
                 gooba();
+
+            case 1:
                 translate(move, 0, width + (width / 2));
                 rotateY(-2 * PI / 3);
                 yaris();
+
+            case 2:
                 rotateY(2 * PI / 3);
                 translate(-2 * move, 0, 0);
                 rotateY(2 * PI / 3);
                 finn();
-
-                hint(DISABLE_DEPTH_TEST); // 2D code starts here
-                camera();
-                noLights();
-                if (frameCount % 60 < 30 && direction == 0) {
-                    text("<Enter>", width / 2, (height) - 50);
-                }
-
-                hint(ENABLE_DEPTH_TEST); // 2D code ends here
-
-                if (direction > 0) {
-                    RotateRight();
-                    direction--;
-                }
-                if (direction < 0) {
-                    RotateLeft();
-                    direction++;
-                }
-
-                break;
-
-            case 1: // Gooba
-                print(Choice);
-
-                break;
-
-            case 2: // Yaris
-                print(Choice);
-                break;
-
-            case 3: // Finn
-                print(Choice);
-                break;
         }
+       
+        
+        hint(DISABLE_DEPTH_TEST); // 2D code starts here
+        camera();
+        noLights();
+
+        if (frameCount % 60 < 30 && direction == 0) {
+            text("<Enter>", width / 2, (height) - 50);
+        }
+
+        hint(ENABLE_DEPTH_TEST); // 2D code ends here
+
+        if (direction > 0) {
+            RotateRight();
+            direction--;
+        }
+        if (direction < 0) {
+            RotateLeft();
+            direction++;
+        }
+    }
+
+     
+    public void gooba() {
+
+        stroke(0, 0, 255);
+        noFill();
+        box(100);
+        rect(0, 0, width - 100, height - 100);
 
     }
 
@@ -204,10 +167,11 @@ public class OOP extends PApplet {
     }
 
     public void finn() {
-        af.play();
-        // takes input of 
+
+        ap.play();
+        // takes input of
         BeatDetection fBeat = new BeatDetection();
-        beat.detect(af.mix);
+        beat.detect(ap.mix);
         Boolean type = fBeat.readBeat((beat));
 
         background(screenBrightness);
@@ -217,12 +181,6 @@ public class OOP extends PApplet {
             screenBrightness -= 2;
 
         stroke(0, 255, 0);
-        noFill();
-
-    }
-
-    public void gooba() {
-        stroke(0, 0, 255);
         noFill();
         box(100);
         rect(0, 0, width - 100, height - 100);
@@ -238,11 +196,16 @@ public class OOP extends PApplet {
     }
 
     public int backgroundBeat(Boolean type, int i) {
-            
-        if (type == true) 
+
+        if (type == true)
             i += 20;
-        
+
         return i;
+    }
+
+    public void changeMusic(String song) {
+        ap = minim.loadFile(song, 1024);
+        ab = ap.mix;
     }
 }
 
