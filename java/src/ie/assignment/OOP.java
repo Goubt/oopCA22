@@ -10,8 +10,6 @@ import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import processing.core.PApplet;
-import processing.core.PImage;
-import processing.core.PVector;
 
 public class OOP extends PApplet
 {
@@ -45,8 +43,6 @@ public class OOP extends PApplet
     int song = 1;
     
     int start = 90;
-
-    ParticleSystem ps;
 
     public void keyPressed() {
         if (keyCode == LEFT && direction == 0) {
@@ -145,8 +141,6 @@ public class OOP extends PApplet
 							 width/2, height/2, -width,
 							 0, 1, 0);
 
-        PImage img = loadImage("images/shrek.png");
-        ps = new ParticleSystem(0, new PVector(width/2, height-60), img);
     }
 
     float off = 0;
@@ -209,7 +203,7 @@ public class OOP extends PApplet
                     ag.rewind();
                     start--;
                 } else {
-                /*background(0);
+                //background(0);
                 
 
                 float halfH = height / 2;
@@ -233,18 +227,8 @@ public class OOP extends PApplet
                     float c = map(i, 0, abg.size(), 0, 255);
                     stroke(c, 255, 255);
                     float f = lerpedBuffer[i] * halfH * 4.0f;
-                    line(i, halfH + f, i, halfH - f);    
-                                    
-                }*/
-                float dx = map(mouseX, 0, width, (float)-0.2, (float)0.2);
-                PVector wind = new PVector(dx, 0);
-                ps.applyForce(wind);
-                ps.run();
-                for (int i = 0; i < 2; i++) {
-                    ps.addParticle();
+                    line(i, halfH + f, i, halfH - f);                    
                 }
-
-                drawVector(wind, new PVector(width/2, 50, 0), 500);
             }
             break;
 
@@ -287,23 +271,6 @@ public class OOP extends PApplet
          
 	}
 
-    void drawVector(PVector v, PVector loc, float scayl) {
-        pushMatrix();
-        float arrowsize = 4;
-        // Translate to position to render vector
-        translate(loc.x, loc.y);
-        stroke(255);
-        // Call vector heading function to get direction (note that pointing up is a heading of 0) and rotate
-        rotate(v.heading());
-        // Calculate length of vector & scale it to be bigger or smaller if necessary
-        float len = v.mag()*scayl;
-        // Draw three lines to make an arrow (draw pointing up since we've rotate to the proper direction)
-        line(0, 0, len, 0);
-        line(len, 0, len-arrowsize, +arrowsize/2);
-        line(len, 0, len-arrowsize, -arrowsize/2);
-        popMatrix();
-      }
-
     public void RotateRight(){
 		camera1.look((float) (radians((float) (1))), 0);
 	}
@@ -312,99 +279,3 @@ public class OOP extends PApplet
 		camera1.look(-(float) (radians((float) (1))), 0);
 	}
 }
-
-class ParticleSystem {
-
-    ArrayList<Particle> particles;    // An arraylist for all the particles
-    PVector origin;                   // An origin point for where particles are birthed
-    PImage img;
-  
-    ParticleSystem(int num, PVector v, PImage img_) {
-      particles = new ArrayList<Particle>();              // Initialize the arraylist
-      origin = v.copy();                                   // Store the origin point
-      img = img_;
-      for (int i = 0; i < num; i++) {
-        particles.add(new Particle(origin, img));         // Add "num" amount of particles to the arraylist
-      }
-    }
-  
-    void run() {
-      for (int i = particles.size()-1; i >= 0; i--) {
-        Particle p = particles.get(i);
-        p.run();
-        if (p.isDead()) {
-          particles.remove(i);
-        }
-      }
-    }
-  
-    // Method to add a force vector to all particles currently in the system
-    void applyForce(PVector dir) {
-      // Enhanced loop!!!
-      for (Particle p : particles) {
-        p.applyForce(dir);
-      }
-    }  
-  
-    void addParticle() {
-      particles.add(new Particle(origin, img));
-    }
-  }
-
-  
-class Particle {
-    PVector loc;
-    PVector vel;
-    PVector acc;
-    float lifespan;
-    PImage img;
-  
-    Particle(PVector l, PImage img_) {
-      acc = new PVector(0, 0);
-      float vx = randomGaussian()*0.3;
-      float vy = randomGaussian()*0.3 - 1.0;
-      vel = new PVector(vx, vy);
-      loc = l.copy();
-      lifespan = (float)100.0;
-      img = img_;
-    }
-  
-    void run() {
-      update();
-      render();
-    }
-  
-    // Method to apply a force vector to the Particle object
-    // Note we are ignoring "mass" here
-    void applyForce(PVector f) {
-      acc.add(f);
-    }  
-  
-    // Method to update position
-    void update() {
-      vel.add(acc);
-      loc.add(vel);
-      lifespan -= 2.5;
-      acc.mult(0); // clear Acceleration
-    }
-  
-    // Method to display
-    void render() {
-      imageMode(CENTER);
-      tint(255, lifespan);
-      image(img, loc.x, loc.y);
-      // Drawing a circle instead
-      // fill(255,lifespan);
-      // noStroke();
-      // ellipse(loc.x,loc.y,img.width,img.height);
-    }
-  
-    // Is the particle still useful?
-    boolean isDead() {
-      if (lifespan <= 0.0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
