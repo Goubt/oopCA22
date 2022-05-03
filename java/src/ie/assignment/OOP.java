@@ -1,45 +1,27 @@
 package ie.assignment;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import damkjer.ocd.*;
 
-import ddf.minim.AudioBuffer;
-import ddf.minim.AudioInput;
-import ddf.minim.AudioPlayer;
-import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
-public class OOP extends PApplet
+public class OOP extends Visual
 {
     float rotation = 0;
-	float direction = 0;
-	Camera camera1;
+    float direction = 0;
+    Camera camera1;
     Camera camera2;
-    
-    Minim minim;
-    AudioInput ai;
-    AudioPlayer ap;
-    AudioBuffer ab;
-    BeatDetect beat;
 
     ParticleSystem tlps;
     ParticleSystem trps;
     ParticleSystem blps;
     ParticleSystem brps;
 
-    int mode = 0;
-
     static final int FADE = 2500;
-
-    float[] lerpedBuffer;
-    float y = 0;
-    float smoothedY = 0;
-    float smoothedAmplitude = 0;
 
     int Choice = 4;
     int menu = 0;
@@ -48,6 +30,8 @@ public class OOP extends PApplet
     int start = 90;
 
     int screenBrightness = 0;
+
+    float[] lerpedBuffer;
 
     public void keyPressed() {
         if (keyCode == LEFT && direction == 0) {
@@ -78,18 +62,19 @@ public class OOP extends PApplet
             loadMusic(Songs[menu]);
         }
         if (key == ENTER) {
-            
+            print("hello");
             Choice = menu;
+            getAudioPlayer().rewind();
             
+        }
+        if (key == BACKSPACE) {
+          Choice = 4;
+          print("hello");
+          getAudioPlayer().rewind();
         }
 
         if (keyCode == ' ') {
-            if (ap.isPlaying()) {
-                ap.pause();
-            } else {
-                ap.rewind();
-                ap.play();
-            }
+          getAudioPlayer().cue(110000);
         }
         }
 
@@ -100,23 +85,15 @@ public class OOP extends PApplet
     }
 
     public void setup()
-    {
-        minim = new Minim(this); 
-        
-        ap = minim.loadFile("POISON.mp3", 1024);
-        ab = ap.mix;
-        ap.play();
-        
+    { 
+        startMinim();
+        loadAudio("POISON.mp3");
+        getAudioPlayer().play();
         
         colorMode(RGB);
 
-        y = height / 2;
-        smoothedY = y;
-
-        lerpedBuffer = new float[width];
-
-        beat = new BeatDetect(ap.bufferSize(), ap.sampleRate());
-        beat.setSensitivity(300);
+        //beat = new BeatDetect(ap.bufferSize(), ap.sampleRate());
+        //beat.setSensitivity(300);
 
 
         camera1 = new Camera(this, 
@@ -124,13 +101,13 @@ public class OOP extends PApplet
 							 width/2, height/2, -width,
 							 0, 1, 0);
 
-        PImage img = loadImage("images/shrek.png");
+        PImage img = loadImage("images/poison.png");
         tlps = new ParticleSystem(5, new PVector(0, 0), img, this);
         trps = new ParticleSystem(5, new PVector(0, width), img, this);
         blps = new ParticleSystem(5, new PVector(height, 0), img, this);
         brps = new ParticleSystem(5, new PVector(height, width), img, this);
 
-
+        lerpedBuffer = new float[width];
     }
 
     float off = 0;
@@ -162,7 +139,7 @@ public class OOP extends PApplet
                 camera();
                 noLights();
                 if(frameCount % 60 < 30 && direction == 0) {
-                    text("<Enter>", width/2, (height)-50);
+                    text("<SELECT1>", width/2, (height)-50);
                 }
 
                 hint(ENABLE_DEPTH_TEST); // 2D code ends here
@@ -180,7 +157,22 @@ public class OOP extends PApplet
         
             case 0: // Gooba
             clear();
-            
+            float sum = 0;
+            for(int i = 0 ; i < getAudioBuffer().size() ; i ++)
+              {
+                  sum += abs(getAudioBuffer().get(i));
+                  lerpedBuffer[i] = lerp(lerpedBuffer[i], getAudioBuffer().get(i), 0.05f);
+              }
+            background(0);
+                for(int i = 0 ; i < getAudioBuffer().size() ; i ++)
+                {
+                    //float c = map(ab.get(i), -1, 1, 0, 255);
+                    float c = map(i, 0, getAudioBuffer().size(), 0, 255);
+                    stroke(c, 255, 255);
+                    float f = lerpedBuffer[i] * height/2 * 4.0f;
+                    line(i, height/2 + f, i, height/2 - f);                    
+                }
+            float passed = getAudioPlayer().position();
             float dx = map(mouseX, 0, width, (float)-0.5, (float)0.5);
                 PVector wind = new PVector(dx, 0);
                 tlps.applyForce(wind);
@@ -191,13 +183,20 @@ public class OOP extends PApplet
                 trps.run();
                 blps.run();
                 brps.run();
-                if(frameCount % 20 < 2 && direction == 0){
+                if (passed > 39500 && passed < 40000 ||
+                    passed > 44000 && passed < 44500 ||
+                    passed > 48500 && passed < 49000 ||
+                    passed > 53000 && passed < 53500 ||
+                    passed > 113000 && passed < 113500 ||
+                    passed > 117500 && passed < 118000 ||
+                    passed > 122000 && passed < 122500 ||
+                    passed > 126500 && passed < 127000 ) {
                     tlps.addParticle();
                     trps.addParticle();
                     blps.addParticle();
                     brps.addParticle();
-                }
-            
+              }
+              
             break;
 
             case 1: // Yaris
@@ -240,11 +239,9 @@ public class OOP extends PApplet
 	}
 
     public void loadMusic(String Song) {
-        ap.shiftGain(0, -50, FADE);
-        ap = minim.loadFile(Song, 1024);
-        ap.shiftGain(-50, 0, FADE);
-        ab = ap.mix;
-        ap.play();
+        Shiftdown();
+        changeAudio(Song);
+        ShiftUp(); 
     }
 
     public int backgroundBeat(Boolean type, int i) {
