@@ -1,16 +1,16 @@
 package ie.assignment;
 
-class Branch {
+class FractalTree {
 
     OOP tree;
-    Branch start;
+    FractalTree start;
 
     float amplitude;
     float angle = 0;
 
-    Branch[] branches;
+    FractalTree[] branches;
 
-    Branch(OOP tree, float amplitude, float angle, int noBranches) {
+    FractalTree(OOP tree, float amplitude, float angle, int noBranches) {
 
         this.tree = tree;
         this.amplitude = amplitude;
@@ -44,11 +44,11 @@ class Branch {
 
             float angle = OOP.map(tree.smoothedAmplitude, 0, 1, 3.14f / 10f, 3.14f / 2f);
 
-            branches = new Branch[2];
+            branches = new FractalTree[2];
             tree.branchCount += 2;
 
-            branches[0] = new Branch(tree, amplitude / 1.4f, angle, noBranches - 2);
-            branches[1] = new Branch(tree, amplitude / 1.3f, -angle, noBranches - 2);
+            branches[0] = new FractalTree(tree, amplitude / 1.4f, angle, noBranches - 2);
+            branches[1] = new FractalTree(tree, amplitude / 1.3f, -angle, noBranches - 2);
 
         }
     }

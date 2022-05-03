@@ -62,7 +62,9 @@ public class Visual extends PApplet
 			total += abs(ab.get(i));
 		}
 		amplitude = total / ab.size();
+		
 		smoothedAmplitude = PApplet.lerp(smoothedAmplitude, amplitude, 0.1f);
+
 	}
 
 
