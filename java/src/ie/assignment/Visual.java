@@ -20,6 +20,7 @@ public abstract class Visual extends PApplet
 
 	private float amplitude  = 0;
 	public float smoothedAmplitude = 0;
+	int position = 0;
 
 	int FADE = 2500;
 	
@@ -96,10 +97,12 @@ public abstract class Visual extends PApplet
 	}
 
 	public void Shiftdown() {
+		position = ap.position();
 		ap.shiftGain(0, -50, FADE);
 	}
 
 	public void ShiftUp() {
+		ap.cue(position);
 		ap.shiftGain(-50, 0, FADE);
 		ab = ap.mix;
         ap.play();

@@ -83,6 +83,7 @@ public class GOOBAvisual extends OOP {
                     sin(k) * abs(oop.getAudioPlayer().left.get(k)) * 200 + sin(k) * 500);
         }
 
+        oop.strokeWeight(1);
         oop.popMatrix();
     }
 

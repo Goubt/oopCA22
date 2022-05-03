@@ -1,12 +1,13 @@
-
 package ie.assignment;
+
 import ddf.minim.analysis.BeatDetect;
 
-public class BeatDetection extends OOP{
+
+public class BeatDetection {
 
     public Boolean HatBeat(BeatDetect beat) {
 
-        if (beat.isRange(24, 10, 5))
+        if (beat.isHat())
             return true;
 
         return false;
@@ -14,10 +15,10 @@ public class BeatDetection extends OOP{
 
     public Boolean readBeat(BeatDetect beat) {
 
+
         if (beat.isKick())
-            return true;
+           return true;
 
         return false;
     }
-
 }
