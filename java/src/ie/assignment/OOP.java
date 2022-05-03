@@ -1,13 +1,13 @@
 package ie.assignment;
 
+import C20402732.GOOBAvisual;
+import C20402732.ParticleSystem;
 import C20492576.FractalTree;
 import damkjer.ocd.*;
 
-import ddf.minim.AudioBuffer;
-import ddf.minim.AudioInput;
-import ddf.minim.AudioPlayer;
-import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
+import processing.core.PImage;
+import processing.core.PVector;
 
 public class OOP extends Visual {
     float rotation = 0;
@@ -15,13 +15,13 @@ public class OOP extends Visual {
     Camera camera1;
     Camera camera2;
 
-    Minim minim;
-    AudioInput ai;
-    AudioPlayer ap;
-    AudioBuffer ab;
-    BeatDetect beat;
+    public static ParticleSystem tlps;
+    public static ParticleSystem trps;
+    public static ParticleSystem blps;
+    public static ParticleSystem brps;
 
-    int mode = 0;
+    public BeatDetect beat;
+    public BeatDetection fBeat = new BeatDetection();
 
     static final int FADE = 2500;
 
@@ -29,18 +29,20 @@ public class OOP extends Visual {
     float y = 0;
     float smoothedY = 0;
 
+    GOOBAvisual gooba;
     FractalTree fv;
     Visual v;
 
-	public float branchCount = 0;
+    public float branchCount = 0;
     public float rotationCycle = 0;
-    
+
     int menu = 0;
     int choice = 0;
 
-    int screenBrightness = 0;
+    public int screenBrightness = 0;
+    public int spheresize = 0;
 
-    String[] Songs = { "GUMMY.mp3", "POISON.mp3", "DARE.mp3" };
+    String[] Songs = { "POISON.mp3", "GUMMY.mp3", "DARE.mp3" };
 
     public void keyPressed() {
 
@@ -52,7 +54,7 @@ public class OOP extends Visual {
 
             else
                 menu--;
-            
+
             loadMusic(Songs[menu]);
         }
 
@@ -88,90 +90,75 @@ public class OOP extends Visual {
     }
 
     public void setup() {
-            
+
         startMinim();
 
         loadAudio("GUMMY.mp3");
         getAudioPlayer().play();
-    
 
-        // BeatDetect(1024, 44100.0f)
+        // BeatDetect(1024, 44100.0f);
         beat = new BeatDetect(getAudioPlayer().bufferSize(), getAudioPlayer().sampleRate());
         beat.setSensitivity(300);
 
-        colorMode(RGB);
+        PImage img = loadImage("images/poison.png");
 
-        y = height / 2;
-        smoothedY = y;
-
-        lerpedBuffer = new float[width];
+        tlps = new ParticleSystem(5, new PVector(-width / 2, -height / 2), img, this);
+        trps = new ParticleSystem(5, new PVector(width / 2, -height / 2), img, this);
+        blps = new ParticleSystem(5, new PVector(-width / 2, height / 2), img, this);
+        brps = new ParticleSystem(5, new PVector(width / 2, height / 2), img, this);
 
         camera1 = new Camera(this,
                 width / 2, height / 2, 0,
                 width / 2, height / 2, -width,
                 0, 1, 0);
 
+        lerpedBuffer = new float[width];
+        gooba = new GOOBAvisual(this);
+
     }
 
     float off = 0;
 
     public void draw() {
-        switch (choice) {
-            case 0:
 
-                calculateAverageAmplitude();   
-              
-                changeBackground();
-                textSize(100);
-                textAlign(CENTER);
-                camera1.feed();
-                rectMode(CENTER);
-                double third = width * 0.866;
-                float move = (float) third;
-                translate(width / 2, height / 2, -width);
-                gooba();
-                translate(move, 0, width + (width / 2));
-                rotateY(-2 * PI / 3);
-                yaris();
-                rotateY(2 * PI / 3);
-                translate(-2 * move, 0, 0);
-                rotateY(2 * PI / 3);
-                finn();
+        calculateAverageAmplitude();
 
-                hint(DISABLE_DEPTH_TEST); // 2D code starts here
-                camera();
-                noLights();
-                if (frameCount % 60 < 30 && direction == 0) {
-                    text("<Enter>", width / 2, (height) - 50);
-                }
+        changeBackground();
+        textSize(100);
+        textAlign(CENTER);
+        camera1.feed();
+        rectMode(CENTER);
+        double third = width * 0.866;
+        float move = (float) third;
 
-                hint(ENABLE_DEPTH_TEST); // 2D code ends here
+        translate(width / 2, height / 2, -width);
+        pushMatrix();
+        gooba();
+        popMatrix();
+        translate(move, 0, width + (width / 2));
+        rotateY(-2 * PI / 3);
+        yaris();
+        rotateY(2 * PI / 3);
+        translate(-2 * move, 0, 0);
+        rotateY(2 * PI / 3);
+        finn();
 
-                if (direction > 0) {
-                    RotateRight();
-                    direction--;
-                }
-                if (direction < 0) {
-                    RotateLeft();
-                    direction++;
-                }
+        hint(DISABLE_DEPTH_TEST); // 2D code starts here
+        camera();
+        noLights();
+        if (frameCount % 60 < 30 && direction == 0) {
+            text("<SELECT>", width / 2, (height) - 50);
+        }
 
-                break;
+        hint(ENABLE_DEPTH_TEST); // 2D code ends here
 
-            case 1: // Gooba
-                gooba();
-                print(choice);
-                break;
-
-            case 2: // Yaris
-                yaris();
-                print(choice);
-                break;
-
-            case 3: // Finn
-                finn();
-                print(choice);
-                break;
+        if (direction > 0) {
+            RotateRight();
+            direction--;
+        }
+        if (direction < 0) {
+            RotateLeft();
+            direction++;
         }
 
     }
@@ -192,7 +179,7 @@ public class OOP extends Visual {
         rect(0, 0, width - 100, height - 100);
 
         fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 20);
-        fv.render();    
+        fv.render();
     }
 
     public void gooba() {
@@ -211,8 +198,6 @@ public class OOP extends Visual {
     }
 
     public void changeBackground() {
-
-        BeatDetection fBeat = new BeatDetection();
         beat.detect(getAudioPlayer().mix);
         Boolean type = fBeat.readBeat((beat));
 
@@ -237,5 +222,3 @@ public class OOP extends Visual {
         ShiftUp();
     }
 }
-
-

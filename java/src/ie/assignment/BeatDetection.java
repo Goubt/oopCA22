@@ -1,7 +1,8 @@
+
 package ie.assignment;
 import ddf.minim.analysis.BeatDetect;
 
-class BeatDetection extends OOP{
+public class BeatDetection extends OOP{
 
     public Boolean HatBeat(BeatDetect beat) {
 

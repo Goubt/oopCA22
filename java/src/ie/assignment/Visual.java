@@ -4,7 +4,7 @@ import processing.core.PApplet;
 import ddf.minim.*;
 import ddf.minim.analysis.FFT;
 
-public class Visual extends PApplet
+public abstract class Visual extends PApplet
 {
 	private int frameSize = 1024;
 	private int sampleRate = 44100;
@@ -18,10 +18,8 @@ public class Visual extends PApplet
 	private AudioBuffer ab;
 	private FFT fft;
 
-	public float amplitude  = 0;
-	public float smoothedAmplitude = 0;
-
-	public float branchCount = 0;
+	private float amplitude  = 0;
+	private float smoothedAmplitude = 0;
 
 	int FADE = 2500;
 	
@@ -62,13 +60,11 @@ public class Visual extends PApplet
 			total += abs(ab.get(i));
 		}
 		amplitude = total / ab.size();
-		
 		smoothedAmplitude = PApplet.lerp(smoothedAmplitude, amplitude, 0.1f);
-
 	}
 
 
-	protected void calculateFrequencyBands() {
+	public void calculateFrequencyBands() {
 		for (int i = 0; i < bands.length; i++) {
 			int start = (int) pow(2, i) - 1;
 			int w = (int) pow(2, i);
