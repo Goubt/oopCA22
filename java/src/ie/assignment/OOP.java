@@ -1,5 +1,6 @@
 package ie.assignment;
 
+import C20492576.FractalTree;
 import damkjer.ocd.*;
 
 import ddf.minim.AudioBuffer;
@@ -189,10 +190,6 @@ public class OOP extends Visual {
         noFill();
         box(100);
         rect(0, 0, width - 100, height - 100);
-
-        v = new Visual();
-        
-
 
         fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 20);
         fv.render();    

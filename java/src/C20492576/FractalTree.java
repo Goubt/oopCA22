@@ -1,6 +1,8 @@
-package ie.assignment;
+package C20492576;
 
-class FractalTree {
+import ie.assignment.OOP;
+
+public class FractalTree {
 
     OOP tree;
     FractalTree start;
@@ -10,7 +12,7 @@ class FractalTree {
 
     FractalTree[] branches;
 
-    FractalTree(OOP tree, float amplitude, float angle, int noBranches) {
+    public FractalTree(OOP tree, float amplitude, float angle, int noBranches) {
 
         this.tree = tree;
         this.amplitude = amplitude;
