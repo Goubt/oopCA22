@@ -19,7 +19,7 @@ public abstract class Visual extends PApplet
 	private FFT fft;
 
 	private float amplitude  = 0;
-	private float smoothedAmplitude = 0;
+	public float smoothedAmplitude = 0;
 
 	int FADE = 2500;
 	

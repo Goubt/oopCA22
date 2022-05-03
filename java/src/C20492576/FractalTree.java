@@ -44,7 +44,7 @@ public class FractalTree {
 
         if (noBranches > 0) {
 
-            float angle = OOP.map(tree.smoothedAmplitude, 0, 1, 3.14f / 10f, 3.14f / 2f);
+            float angle = OOP.map(tree.getSmoothedAmplitude(), 0, 1, 3.14f / 10f, 3.14f / 2f);
 
             branches = new FractalTree[2];
             tree.branchCount += 2;
