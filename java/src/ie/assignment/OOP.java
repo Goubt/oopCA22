@@ -7,9 +7,8 @@ import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
-import processing.core.PApplet;
 
-public class OOP extends PApplet {
+public class OOP extends Visual {
     float rotation = 0;
     float direction = 0;
     Camera camera1;
@@ -19,7 +18,6 @@ public class OOP extends PApplet {
     AudioInput ai;
     AudioPlayer ap;
     AudioBuffer ab;
-
     BeatDetect beat;
 
     int mode = 0;
@@ -29,33 +27,42 @@ public class OOP extends PApplet {
     float[] lerpedBuffer;
     float y = 0;
     float smoothedY = 0;
-    float smoothedAmplitude = 0;
+
+    Branch fv;
+
+    public float amplitude = 0;
+	public float smoothedAmplitude = 0;
+
+	public float branchCount = 0;
+
+    public float rotationCycle = 0;
+    
 
     int menu = 0;
     int choice = 0;
 
     int screenBrightness = 0;
 
-    String[] Songs = {"GUMMY.mp3", "POISON.mp3", "DARE.mp3"};
+    String[] Songs = { "GUMMY.mp3", "POISON.mp3", "DARE.mp3" };
 
     public void keyPressed() {
 
         if (keyCode == LEFT && direction == 0) {
             direction -= 120;
 
-            if(menu == 0) 
+            if (menu == 0)
                 menu = 2;
 
             else
                 menu--;
-        
+
             loadMusic(Songs[menu]);
         }
 
         if (keyCode == RIGHT && direction == 0) {
             direction += 120;
 
-            if(menu == 2)
+            if (menu == 2)
                 menu = 0;
 
             else
@@ -67,12 +74,12 @@ public class OOP extends PApplet {
         if (key == ENTER) {
 
             // if (choice == 1) {
-            //     af.pause();
-            //     ay.pause();
-            //     ag.pause();
-            //     // wait(50);
-            //     ag.play();
-            //     ag.rewind();
+            // af.pause();
+            // ay.pause();
+            // ag.pause();
+            // // wait(50);
+            // ag.play();
+            // ag.rewind();
             // }
         }
 
@@ -84,11 +91,14 @@ public class OOP extends PApplet {
     }
 
     public void setup() {
+
         minim = new Minim(this);
+        
+        
         ap = minim.loadFile("GUMMY.mp3", 1024);
         ab = ap.mix;
         ap.play();
-        
+
         // BeatDetect(1024, 44100.0f)
         beat = new BeatDetect(ap.bufferSize(), ap.sampleRate());
         beat.setSensitivity(300);
@@ -113,6 +123,8 @@ public class OOP extends PApplet {
         switch (choice) {
             case 0:
 
+                calculateAverageAmplitude();   
+
                 changeBackground();
                 textSize(100);
                 textAlign(CENTER);
@@ -129,7 +141,7 @@ public class OOP extends PApplet {
                 translate(-2 * move, 0, 0);
                 rotateY(2 * PI / 3);
                 finn();
-                
+
                 hint(DISABLE_DEPTH_TEST); // 2D code starts here
                 camera();
                 noLights();
@@ -177,11 +189,18 @@ public class OOP extends PApplet {
     }
 
     public void finn() {
-    
+
         stroke(0, 255, 0);
         noFill();
         box(100);
         rect(0, 0, width - 100, height - 100);
+
+        fv = new Branch(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 15);
+
+        fv.render();
+        //fv.display();
+
+    
     }
 
     public void gooba() {
@@ -200,7 +219,7 @@ public class OOP extends PApplet {
     }
 
     public void changeBackground() {
-    
+
         BeatDetection fBeat = new BeatDetection();
         beat.detect(ap.mix);
         Boolean type = fBeat.readBeat((beat));
@@ -220,8 +239,6 @@ public class OOP extends PApplet {
         return i;
     }
 
-    
-
     public void loadMusic(String Song) {
         ap.shiftGain(0, -50, FADE);
         ap = minim.loadFile(Song, 1024);
@@ -229,6 +246,19 @@ public class OOP extends PApplet {
         ap.play();
         ab = ap.mix;
     }
+
+    public void calculateAverageAmplitude()
+	{
+		float total = 0;
+		for(int i = 0 ; i < ab.size() ; i ++)
+        {
+			total += abs(ab.get(i));
+		}
+		amplitude = total / ab.size();
+        
+        
+		smoothedAmplitude = Visual.lerp(smoothedAmplitude, amplitude, 0.1f);
+	}
 }
 
 class BeatDetection {
@@ -241,9 +271,5 @@ class BeatDetection {
         return false;
     }
 
-    
-
-    
 }
-
 
