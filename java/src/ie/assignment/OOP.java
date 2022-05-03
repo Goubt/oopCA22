@@ -102,10 +102,10 @@ public class OOP extends Visual {
 
         PImage img = loadImage("images/poison.png");
 
-        tlps = new ParticleSystem(5, new PVector(0, 0), img, this);
-        trps = new ParticleSystem(5, new PVector(0, width), img, this);
-        blps = new ParticleSystem(5, new PVector(height, 0), img, this);
-        brps = new ParticleSystem(5, new PVector(height, width), img, this);
+        tlps = new ParticleSystem(5, new PVector(-width/2, -height/2), img, this);
+        trps = new ParticleSystem(5, new PVector(width/2, -height/2), img, this);
+        blps = new ParticleSystem(5, new PVector(-width/2, height/2), img, this);
+        brps = new ParticleSystem(5, new PVector(width/2, height/2), img, this);
 
         camera1 = new Camera(this,
                 width / 2, height / 2, 0,
@@ -219,7 +219,7 @@ public class OOP extends Visual {
 
     public int HatBeat(Boolean type, int i){
         if (type == true)
-            i += 20;
+            i += 2;
 
         return i;
     }

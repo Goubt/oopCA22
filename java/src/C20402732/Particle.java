@@ -16,10 +16,10 @@ class Particle extends PApplet{
       this.pa = pa;
       float vx = pa.randomGaussian()*1.7f;
       float vy = pa.randomGaussian()*0.3f-4.0f;
-      if (l.x != 0) {
+      if (l.x > 0) {
         vx = -vx; 
       }
-      if (l.y == 0){
+      if (l.y < 0){
         vy = -vy;
       }  
       vel = new PVector(vx, vy);

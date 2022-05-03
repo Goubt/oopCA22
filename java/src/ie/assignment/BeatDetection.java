@@ -1,6 +1,4 @@
-package C20402732;
-
-import ie.assignment.OOP;
+package ie.assignment;
 
 import ddf.minim.analysis.BeatDetect;
 
@@ -9,7 +7,7 @@ public class BeatDetection {
 
     public Boolean HatBeat(BeatDetect beat) {
 
-        if (beat.isRange(24, 10, 5))
+        if (beat.isHat())
             return true;
 
         return false;

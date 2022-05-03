@@ -30,7 +30,7 @@ public class GOOBAvisual extends OOP {
     public void HatFlash() {
         oop.beat.detect(oop.getAudioPlayer().mix);
         Boolean type = oop.fBeat.HatBeat((oop.beat));
-        float actualsize = map(oop.spheresize, 0, 30, 50, 400);
+        float actualsize = map(oop.spheresize, 0, 20, 50, 100);
 
         oop.pushMatrix();
         oop.fill(255, 255, 255);
@@ -97,6 +97,7 @@ public class GOOBAvisual extends OOP {
 
     public void poison() {
 
+        
         float passed = oop.getAudioPlayer().position();
 
         float dx = map(oop.mouseX, 0, oop.width, (float) -0.2, (float) 0.2);
