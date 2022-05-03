@@ -14,7 +14,7 @@ class Particle extends PApplet{
     Particle(PVector l, PImage img_, PApplet pa) {
       acc = new PVector(0, 0);
       this.pa = pa;
-      float vx = pa.randomGaussian()*1.0f;
+      float vx = pa.randomGaussian()*0.3f;
       float vy = pa.randomGaussian()*0.3f-4.0f;
       if (l.x != 0) {
         vx = -vx; 

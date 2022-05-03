@@ -6,13 +6,13 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
-class ParticleSystem {
+public class ParticleSystem {
 
     ArrayList<Particle> particles;    // An arraylist for all the particles
     PVector origin;                   // An origin point for where particles are birthed
     PImage img;
     PApplet pa;
-    ParticleSystem(int num, PVector v, PImage img_, PApplet pa) {
+    public ParticleSystem(int num, PVector v, PImage img_, PApplet pa) {
       particles = new ArrayList<Particle>();              // Initialize the arraylist
       origin = v.copy();                                   // Store the origin point
       img = img_;
