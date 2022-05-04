@@ -185,7 +185,7 @@ public class OOP extends Visual {
 
     public void finn() {
 
-        
+        stroke(255);
         fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 20);
         fv.render();  
     }
