@@ -17,11 +17,9 @@ public class GOOBAvisual extends OOP {
     DynamicColour dc;
 
     int bleh = 0;
-<<<<<<< HEAD
     float blehcontrol = 0;
     float diameter = 0;
-=======
->>>>>>> Colour
+    int colour = 0;
 
     public void render() {
 
@@ -80,7 +78,7 @@ public class GOOBAvisual extends OOP {
         oop.strokeWeight(15);
         oop.noFill();
         oop.ellipse(0, 0, 1000, 1000);
-        oop.fill(0, 5);
+        
 
         oop.pushMatrix();
 
@@ -91,7 +89,8 @@ public class GOOBAvisual extends OOP {
                     sin(j) * abs(oop.getAudioPlayer().right.get(j)) * 200 + sin(j) * 500);
         }
         for (int k = 360; k > 0; k--) {
-
+            colour = map(k, 0,360, 0 ,255);
+            oop.stroke(k, (k+50%255, (k+100%255));
             oop.line(cos(k) * 500, sin(k) * 500, cos(k) * abs(oop.getAudioPlayer().right.get(k)) * 200 + cos(k) * 500,
                     sin(k) * abs(oop.getAudioPlayer().left.get(k)) * 200 + sin(k) * 500);
         }

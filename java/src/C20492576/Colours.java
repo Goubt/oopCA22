@@ -13,8 +13,4 @@ public class Colours {
     public int rChange = 1;
     public int gChange = 1;
     public int bChange = 1;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> Colour
