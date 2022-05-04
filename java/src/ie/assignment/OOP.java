@@ -1,6 +1,7 @@
 package ie.assignment;
 
 import C20402732.*;
+import C20492576.*;
 import C20492576.FractalTree;
 import damkjer.ocd.*;
 
@@ -15,11 +16,13 @@ public class OOP extends Visual {
     public Camera camera1;
 
     GOOBAvisual gooba;
+
     FractalTree fv;
-    Visual v;
+    public Colours clFinn;
 
     public float branchCount = 0;
     public float rotationCycle = 0;
+    public float rotateTree = 0;
 
     public BeatDetect beat;
 
@@ -72,12 +75,14 @@ public class OOP extends Visual {
 
             loadMusic(Songs[menu]);
         }
+
         if (key == ENTER) {
 
             Choice = menu;
             getAudioPlayer().rewind();
 
         }
+
         if (key == BACKSPACE) {
             Choice = 4;
 
@@ -87,6 +92,10 @@ public class OOP extends Visual {
         if (keyCode == ' ') {
             getAudioPlayer().cue(110000);
         }
+
+    
+        
+        
     }
 
     public void settings() {
@@ -101,16 +110,16 @@ public class OOP extends Visual {
 
         colorMode(RGB);
 
-        //BeatDetect(1024, 44100.0f);
+        // BeatDetect(1024, 44100.0f);
         beat = new BeatDetect(getAudioPlayer().bufferSize(), getAudioPlayer().sampleRate());
         beat.setSensitivity(300);
 
         PImage img = loadImage("images/poison.png");
 
-        tlps = new ParticleSystem(5, new PVector(-width/2, -height/2), img, this);
-        trps = new ParticleSystem(5, new PVector(width/2, -height/2), img, this);
-        blps = new ParticleSystem(5, new PVector(-width/2, height/2), img, this);
-        brps = new ParticleSystem(5, new PVector(width/2, height/2), img, this);
+        tlps = new ParticleSystem(5, new PVector(-width / 2, -height / 2), img, this);
+        trps = new ParticleSystem(5, new PVector(width / 2, -height / 2), img, this);
+        blps = new ParticleSystem(5, new PVector(-width / 2, height / 2), img, this);
+        brps = new ParticleSystem(5, new PVector(width / 2, height / 2), img, this);
 
         camera1 = new Camera(this,
                 width / 2, height / 2, 0,
@@ -120,54 +129,56 @@ public class OOP extends Visual {
         lerpedBuffer = new float[width];
         gooba = new GOOBAvisual(this);
 
+        clFinn = new Colours();
+
     }
 
     float off = 0;
 
     public void draw() {
 
-        calculateAverageAmplitude();   
+        calculateAverageAmplitude();
         changeBackground();
-                textSize(100);
-                textAlign(CENTER);
+        textSize(100);
+        textAlign(CENTER);
 
-                camera1.feed();
-                rectMode(CENTER);
-                double third = width * 0.866;
-                float move = (float) third;
+        camera1.feed();
+        rectMode(CENTER);
+        double third = width * 0.866;
+        float move = (float) third;
 
-                translate(width / 2, height / 2, -width);
-                pushMatrix();
-                gooba();
-                popMatrix();
-                translate(move, 0, width + (width / 2));
-                rotateY(-2 * PI / 3);
-                yaris();
-                rotateY(2 * PI / 3);
-                translate(-2 * move, 0, 0);
-                rotateY(2 * PI / 3);
-                finn();
+        translate(width / 2, height / 2, -width);
+        pushMatrix();
+        gooba();
+        popMatrix();
+        translate(move, 0, width + (width / 2));
+        rotateY(-2 * PI / 3);
+        yaris();
+        rotateY(2 * PI / 3);
+        translate(-2 * move, 0, 0);
+        rotateY(2 * PI / 3);
+        finn();
 
-                hint(DISABLE_DEPTH_TEST); // 2D code starts here
-                camera();
-                noLights();
-                if (frameCount % 60 < 30 && direction == 0) {
-                    text("<SELECT>", width / 2, (height) - 50);
-                }
+        hint(DISABLE_DEPTH_TEST); // 2D code starts here
+        camera();
+        noLights();
+        if (frameCount % 60 < 30 && direction == 0) {
+            text("<SELECT>", width / 2, (height) - 50);
+        }
 
-                fill(0,60);
-                rect(0, 0, width * 2, height * 2);
+        fill(0, 60);
+        rect(0, 0, width * 2, height * 2);
 
-                hint(ENABLE_DEPTH_TEST); // 2D code ends here
+        hint(ENABLE_DEPTH_TEST); // 2D code ends here
 
-                if (direction > 0) {
-                    RotateRight();
-                    direction--;
-                }
-                if (direction < 0) {
-                    RotateLeft();
-                    direction++;
-                }
+        if (direction > 0) {
+            RotateRight();
+            direction--;
+        }
+        if (direction < 0) {
+            RotateLeft();
+            direction++;
+        }
 
     }
 
@@ -186,11 +197,14 @@ public class OOP extends Visual {
     public void finn() {
 
         stroke(255);
-        fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 20);
-        fv.render();  
+
+        
+
+        fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 15);
+        fv.render();
     }
 
-    public void gooba() {         
+    public void gooba() {
         gooba.render();
     }
 
@@ -200,7 +214,7 @@ public class OOP extends Visual {
         ShiftUp();
     }
 
-    public int HatBeat(Boolean type, int i){
+    public int HatBeat(Boolean type, int i) {
         if (type == true)
             i += 2;
 
@@ -213,7 +227,7 @@ public class OOP extends Visual {
         beat.detect(getAudioPlayer().mix);
         Boolean type = fBeat.readBeat((beat));
 
-        //background(screenBrightness);
+        // background(screenBrightness);
         screenBrightness = backgroundBeat(type, screenBrightness);
 
         if (screenBrightness > 10)
