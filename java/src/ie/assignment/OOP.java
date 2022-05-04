@@ -99,7 +99,7 @@ public class OOP extends Visual {
         loadAudio("POISON.mp3");
         getAudioPlayer().play();
 
-        colorMode(RGB);
+        colorMode(HSB);
 
         //BeatDetect(1024, 44100.0f);
         beat = new BeatDetect(getAudioPlayer().bufferSize(), getAudioPlayer().sampleRate());
@@ -127,10 +127,10 @@ public class OOP extends Visual {
     public void draw() {
 
         calculateAverageAmplitude();   
-        changeBackground();
+        //changeBackground();
                 textSize(100);
                 textAlign(CENTER);
-                background(0);
+                //background(0);
                 camera1.feed();
                 rectMode(CENTER);
                 double third = width * 0.866;
@@ -154,6 +154,8 @@ public class OOP extends Visual {
                 if (frameCount % 60 < 30 && direction == 0) {
                     text("<SELECT>", width / 2, (height) - 50);
                 }
+                fill(0,70);
+                rect(0, 0, width*2, height*2);
 
                 hint(ENABLE_DEPTH_TEST); // 2D code ends here
 
@@ -182,11 +184,8 @@ public class OOP extends Visual {
 
     public void finn() {
 
-        stroke(0, 255, 0);
-        noFill();
-        box(100);
-        rect(0, 0, width - 100, height - 100);
-
+        
+        stroke(255);
         fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 20);
         fv.render();  
     }
@@ -214,7 +213,7 @@ public class OOP extends Visual {
         beat.detect(getAudioPlayer().mix);
         Boolean type = fBeat.readBeat((beat));
 
-        background(screenBrightness);
+        //background(screenBrightness);
         screenBrightness = backgroundBeat(type, screenBrightness);
 
         if (screenBrightness > 10)
