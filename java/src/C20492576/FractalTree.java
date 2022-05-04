@@ -23,6 +23,7 @@ public class FractalTree {
     }
 
     void display() {
+
         tree.rotate(this.angle);
 
         tree.line(0, 0, 0, amplitude);
@@ -57,19 +58,24 @@ public class FractalTree {
 
     public void render() {
 
+        
+
         tree.rotationCycle++;
 
-        tree.rotate(OOP.map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 8));
+        tree.rotate(OOP.map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4));
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 8; i++) {
             // tree.resetMatrix();
-            tree.rotate(tree.PI / 5);
+            tree.rotate(tree.PI / 4);
             tree.pushMatrix();
 
             tree.translate(tree.width / 2, tree.height / 2);
 
             tree.branchCount = 0;
             tree.popMatrix();
+
+            
+            tree.stroke((tree.rotationCycle / 2) % 255, (tree.rotationCycle / 3) % 255, (tree.rotationCycle / 4) % 255);
 
             display();
 

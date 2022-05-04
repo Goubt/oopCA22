@@ -17,7 +17,7 @@ public class GOOBAvisual extends OOP {
     public void render() {
 
         oop.calculateAverageAmplitude();
-        oop.background(0);
+        //oop.background(0);
         oop.noFill();
         Kickflash();
         HatFlash();
@@ -55,7 +55,7 @@ public class GOOBAvisual extends OOP {
         Boolean type = oop.fBeat.readBeat((oop.beat));
 
 
-        oop.background(oop.screenBrightness);
+        //oop.background(oop.screenBrightness);
         oop.screenBrightness = backgroundBeat(type, oop.screenBrightness);
 
         if (oop.screenBrightness > 10)

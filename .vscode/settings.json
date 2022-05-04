@@ -1,0 +1,30 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "java/lib/core.jar",
+        "java/lib/gluegen-rt.jar",
+        "java/lib/gluegen-rt-natives-linux-aarch64.jar",
+        "java/lib/gluegen-rt-natives-linux-amd64.jar",
+        "java/lib/gluegen-rt-natives-linux-armv6hf.jar",
+        "java/lib/gluegen-rt-natives-linux-i586.jar",
+        "java/lib/gluegen-rt-natives-macosx-universal.jar",
+        "java/lib/gluegen-rt-natives-windows-amd64.jar",
+        "java/lib/gluegen-rt-natives-windows-i586.jar",
+        "java/lib/jl1.0.1.jar",
+        "java/lib/jogl-all.jar",
+        "java/lib/jogl-all-natives-linux-aarch64.jar",
+        "java/lib/jogl-all-natives-linux-amd64.jar",
+        "java/lib/jogl-all-natives-linux-armv6hf.jar",
+        "java/lib/jogl-all-natives-linux-i586.jar",
+        "java/lib/jogl-all-natives-macosx-universal.jar",
+        "java/lib/jogl-all-natives-windows-amd64.jar",
+        "java/lib/jogl-all-natives-windows-i586.jar",
+        "java/lib/jsminim.jar",
+        "java/lib/minim.jar",
+        "java/lib/mp3spi1.9.5.jar",
+        "java/lib/ocd.jar",
+        "java/lib/sqlite-jdbc-3.23.1.jar",
+        "java/lib/tritonus_aos.jar",
+        "java/lib/tritonus_share.jar"
+    ]
+}
