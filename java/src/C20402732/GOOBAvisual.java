@@ -17,13 +17,16 @@ public class GOOBAvisual extends OOP {
     DynamicColour dc;
 
     int bleh = 0;
+<<<<<<< HEAD
     float blehcontrol = 0;
     float diameter = 0;
+=======
+>>>>>>> Colour
 
     public void render() {
 
         oop.calculateAverageAmplitude();
-        
+        //oop.background(0);
         oop.noFill();
         Kickflash();
         HatFlash();
@@ -76,16 +79,23 @@ public class GOOBAvisual extends OOP {
         oop.rotate(radians(frameCount % 360 * 2));
         oop.strokeWeight(15);
         oop.noFill();
-        oop.ellipse(0, 0, diameter*2, diameter*2);
+        oop.ellipse(0, 0, 1000, 1000);
         oop.fill(0, 5);
 
         oop.pushMatrix();
-        
+
+        oop.rotate(radians(frameCount % 360 * 2));
         for (int j = 0; j < 360; j++) {
 
-            oop.line(cos(j) * diameter, sin(j) * diameter, cos(j) * abs(oop.getAudioPlayer().left.get(j)) * 200 + cos(j) * diameter,
-                    sin(j) * abs(oop.getAudioPlayer().right.get(j)) * 200 + sin(j) * diameter);
+            oop.line(cos(j) * 500, sin(j) * 500, cos(j) * abs(oop.getAudioPlayer().left.get(j)) * 200 + cos(j) * 500,
+                    sin(j) * abs(oop.getAudioPlayer().right.get(j)) * 200 + sin(j) * 500);
         }
+        for (int k = 360; k > 0; k--) {
+
+            oop.line(cos(k) * 500, sin(k) * 500, cos(k) * abs(oop.getAudioPlayer().right.get(k)) * 200 + cos(k) * 500,
+                    sin(k) * abs(oop.getAudioPlayer().left.get(k)) * 200 + sin(k) * 500);
+        }
+
         oop.strokeWeight(1);
         oop.popMatrix();
     }

@@ -16,16 +16,23 @@ public class OOP extends Visual {
     public Camera camera1;
 
     GOOBAvisual gooba;
+<<<<<<< HEAD
     public Colours clGooba;
+=======
+>>>>>>> Colour
 
     FractalTree fv;
     public Colours clFinn;
 
     public float branchCount = 0;
     public float rotationCycle = 0;
+<<<<<<< HEAD
     public float rotateAngle = 0;
     public float angleX = 0;
     public float angleY = 0;
+=======
+    public float rotateTree = 0;
+>>>>>>> Colour
 
     public BeatDetect beat;
 
@@ -115,6 +122,12 @@ public class OOP extends Visual {
             getAudioPlayer().cue(110000);
         }
 
+<<<<<<< HEAD
+=======
+    
+        
+        
+>>>>>>> Colour
     }
 
     public void settings() {
@@ -149,7 +162,10 @@ public class OOP extends Visual {
         gooba = new GOOBAvisual(this);
 
         clFinn = new Colours();
+<<<<<<< HEAD
         clGooba = new Colours();
+=======
+>>>>>>> Colour
 
     }
 
@@ -188,9 +204,13 @@ public class OOP extends Visual {
 
         fill(0, 60);
         rect(0, 0, width * 2, height * 2);
+<<<<<<< HEAD
         textSize(20);
         fill(255);
         text(frameRate, 50, 50);
+=======
+
+>>>>>>> Colour
         hint(ENABLE_DEPTH_TEST); // 2D code ends here
 
         if (direction > 0) {
@@ -220,6 +240,11 @@ public class OOP extends Visual {
 
         stroke(255);
 
+<<<<<<< HEAD
+=======
+        
+
+>>>>>>> Colour
         fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 15);
         fv.render();
     }
