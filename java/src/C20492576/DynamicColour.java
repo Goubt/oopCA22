@@ -5,31 +5,33 @@ import ie.assignment.*;
 public class DynamicColour {
 
     OOP obj;
+    Colours cl;
 
-    public DynamicColour(OOP obj) {
+    public DynamicColour(OOP obj, Colours cl) {
         this.obj = obj;
+        this.cl = cl;
     }
 
     public void changeColour(float speed) {
 
-        obj.clFinn.r += obj.clFinn.rChange * speed;
+        cl.r += cl.rChange * speed;
 
-        if (obj.clFinn.r < 0 || obj.clFinn.r > 255) {
-            obj.clFinn.rChange *= -1;
+        if (cl.r < 0 || cl.r > 255) {
+            cl.rChange *= -1;
         }
 
-        obj.clFinn.g += obj.clFinn.gChange * speed;
+        cl.g += cl.gChange * speed;
 
-        if (obj.clFinn.g < 0 || obj.clFinn.g > 255) {
-            obj.clFinn.gChange *= -1;
+        if (cl.g < 0 || cl.g > 255) {
+            cl.gChange *= -1;
         }
 
-        obj.clFinn.b += obj.clFinn.bChange * speed;
+        cl.b += cl.bChange * speed;
 
-        if (obj.clFinn.b < 0 || obj.clFinn.b > 255) {
-            obj.clFinn.bChange *= -1;
+        if (cl.b < 0 || cl.b > 255) {
+            cl.bChange *= -1;
         }
 
-        obj.stroke(obj.clFinn.r, obj.clFinn.g, obj.clFinn.b);
+        obj.stroke(cl.r, cl.g, cl.b);
     }
 }

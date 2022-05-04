@@ -17,16 +17,21 @@ public class OOP extends Visual {
 
     GOOBAvisual gooba;
 
-    FractalTree fv;
-    public Colours clFinn;
 
+    // fractal tree
+    FractalTree fv;
     public float branchCount = 0;
     public float rotationCycle = 0;
-    public float rotateAngle = 0;
-    public float angleX = 0;
-    public float angleY = 0;
+    public int changeVisual = 0;
+    public int rotateDirection = 0;
 
-    public BeatDetect beat;
+    // colour
+    public Colours clFinn;
+
+    // mouse tracking
+    PVector mouseLocation = new PVector();
+    public float rotationAngle = 0; 
+    public float mouseVal, mouseRotation, easing = 0.07f;
 
     static final int FADE = 2500;
 
@@ -47,28 +52,12 @@ public class OOP extends Visual {
     public static ParticleSystem blps;
     public static ParticleSystem brps;
 
+    // beat detection
+    public BeatDetect beat;
     public BeatDetection fBeat = new BeatDetection();
 
-    public void mouseDragged() {
-    
-        angleX += (pmouseX - mouseX) * 0.020;
-    
-        if (angleX < 0)
-            angleX = angleX % TWO_PI + TWO_PI;
-        if (angleX > TWO_PI)
-            angleX = angleX % TWO_PI;
-
-        angleY += (pmouseY - mouseY) * 0.020;
-
-        if (angleY < 0)
-            angleY = angleY % TWO_PI + TWO_PI;
-        if (angleY > TWO_PI)
-            angleY = angleY % TWO_PI;
-
-        
-    }
-
     public void keyPressed() {
+
         if (keyCode == LEFT && direction == 0) {
             direction -= 120;
 
@@ -112,6 +101,24 @@ public class OOP extends Visual {
 
         if (keyCode == ' ') {
             getAudioPlayer().cue(110000);
+        }
+
+        
+
+        if (keyCode == 'X') {
+            if (rotateDirection == 0) 
+                rotateDirection = 1;
+            else
+                rotateDirection = 0;
+        }
+
+        if (keyCode == 'C') {
+            if(changeVisual == 0)
+                changeVisual = 1;
+
+            else
+                changeVisual = 0;
+
         }
 
     }
@@ -215,8 +222,7 @@ public class OOP extends Visual {
     public void finn() {
 
         stroke(255);
-
-        fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 15);
+        fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 15, clFinn);
         fv.render();
     }
 
@@ -264,5 +270,20 @@ public class OOP extends Visual {
 
     public void RotateLeft() {
         camera1.look(-(float) (radians((float) (1))), 0);
+    }
+
+    public void getMouseAngle() {
+
+        mouseLocation.set(mouseX, mouseY, 0);
+        mouseLocation.sub(width / 2, height / 2, 0);
+        mouseVal = mouseLocation.heading();
+        mouseRotation = (mouseVal - rotationAngle) / PI;
+        if (mouseRotation < -1)
+            rotationAngle -= PI * 2;
+
+        else if (mouseRotation > 1)
+            rotationAngle += PI * 2;
+        rotationAngle += (mouseVal - rotationAngle) * easing;
+
     }
 }
