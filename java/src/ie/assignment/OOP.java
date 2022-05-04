@@ -22,7 +22,9 @@ public class OOP extends Visual {
 
     public float branchCount = 0;
     public float rotationCycle = 0;
-    public float rotateTree = 0;
+    public float rotateAngle = 0;
+    public float angleX = 0;
+    public float angleY = 0;
 
     public BeatDetect beat;
 
@@ -46,6 +48,25 @@ public class OOP extends Visual {
     public static ParticleSystem brps;
 
     public BeatDetection fBeat = new BeatDetection();
+
+    public void mouseDragged() {
+    
+        angleX += (pmouseX - mouseX) * 0.020;
+    
+        if (angleX < 0)
+            angleX = angleX % TWO_PI + TWO_PI;
+        if (angleX > TWO_PI)
+            angleX = angleX % TWO_PI;
+
+        angleY += (pmouseY - mouseY) * 0.020;
+
+        if (angleY < 0)
+            angleY = angleY % TWO_PI + TWO_PI;
+        if (angleY > TWO_PI)
+            angleY = angleY % TWO_PI;
+
+        
+    }
 
     public void keyPressed() {
         if (keyCode == LEFT && direction == 0) {
@@ -93,9 +114,6 @@ public class OOP extends Visual {
             getAudioPlayer().cue(110000);
         }
 
-    
-        
-        
     }
 
     public void settings() {
@@ -197,8 +215,6 @@ public class OOP extends Visual {
     public void finn() {
 
         stroke(255);
-
-        
 
         fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 15);
         fv.render();
