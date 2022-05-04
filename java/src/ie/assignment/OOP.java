@@ -1,5 +1,6 @@
 package ie.assignment;
 
+import C20394791.CircleLines;
 import C20402732.*;
 import C20492576.FractalTree;
 import damkjer.ocd.*;
@@ -14,6 +15,7 @@ public class OOP extends Visual {
     float direction = 0;
     public Camera camera1;
 
+    CircleLines Yaris;
     GOOBAvisual gooba;
     FractalTree fv;
     Visual v;
@@ -119,6 +121,7 @@ public class OOP extends Visual {
 
         lerpedBuffer = new float[width];
         gooba = new GOOBAvisual(this);
+        Yaris = new CircleLines(this);
 
     }
 
@@ -177,11 +180,8 @@ public class OOP extends Visual {
     }
 
     public void yaris() {
-
-        stroke(255, 0, 0);
-        noFill();
-        box(100);
-        rect(0, 0, width - 100, height - 100);
+        
+        //Yaris.render();
     }
 
     public void finn() {
