@@ -1,10 +1,12 @@
 package C20492576;
 
 import ie.assignment.OOP;
+import processing.core.PApplet;
 
-public class FractalTree {
+public class FractalTree extends PApplet {
 
     OOP tree;
+    DynamicColour dc;
     FractalTree start;
 
     float amplitude;
@@ -17,12 +19,13 @@ public class FractalTree {
         this.tree = tree;
         this.amplitude = amplitude;
         this.angle = angle;
-
         branch(noBranches);
+        dc = new DynamicColour(tree);
 
     }
 
     void display() {
+
         tree.rotate(this.angle);
 
         tree.line(0, 0, 0, amplitude);
@@ -59,17 +62,29 @@ public class FractalTree {
 
         tree.rotationCycle++;
 
-        tree.rotate(OOP.map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 8));
+        // tree.rotate(OOP.map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4));
+        tree.rotateAngle = atan2(tree.angleX, tree.angleY);
+        if(tree.mouseX == 0) {
 
-        for (int i = 0; i < 10; i++) {
+        }
+        tree.rotate(-tree.rotateAngle);
+
+        for (int i = 0; i < 8; i++) {
             // tree.resetMatrix();
-            tree.rotate(tree.PI / 5);
+            tree.rotate(tree.PI / 4);
             tree.pushMatrix();
 
             tree.translate(tree.width / 2, tree.height / 2);
 
             tree.branchCount = 0;
             tree.popMatrix();
+
+            // tree.stroke(tree.r,tree.g,tree.b);
+
+            dc.changeColour(0.1f);
+
+            // tree.stroke((tree.rotationCycle / 2) % 255, (tree.rotationCycle / 3) % 255,
+            // (tree.rotationCycle / 4) % 255);
 
             display();
 

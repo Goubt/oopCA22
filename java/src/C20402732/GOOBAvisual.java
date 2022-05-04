@@ -1,5 +1,6 @@
 package C20402732;
 
+import C20492576.DynamicColour;
 import ie.assignment.OOP;
 
 import processing.core.PVector;
@@ -10,7 +11,10 @@ public class GOOBAvisual extends OOP {
 
     public GOOBAvisual(OOP oop) {
         this.oop = oop;
+        dc = new DynamicColour(oop);
     }
+
+    DynamicColour dc;
 
     int bleh = 0;
     float blehcontrol = 0;
@@ -25,7 +29,6 @@ public class GOOBAvisual extends OOP {
         HatFlash();
         circle();
         centre();
-        // sphere();
         poison();
 
     }
@@ -34,10 +37,11 @@ public class GOOBAvisual extends OOP {
         oop.beat.detect(oop.getAudioPlayer().mix);
         Boolean type = oop.fBeat.HatBeat((oop.beat));
         float actualsize = map(oop.spheresize, 0, 20, 50, 100);
-
+        oop.noFill();
+        oop.strokeWeight(1);
+        oop.stroke(80,180,80);
         oop.pushMatrix();
-        oop.fill(255, 255, 255);
-        oop.noStroke();
+        
         oop.translate(oop.width / 2, oop.height / 2, 0);
         oop.sphere(actualsize);
         oop.translate(-oop.width, 0, 0);
@@ -70,7 +74,7 @@ public class GOOBAvisual extends OOP {
         diameter = oop.getSmoothedAmplitude();
         diameter = map(diameter, 0, 1, 400, 500);
         oop.rotate(radians(frameCount % 360 * 2));
-        oop.strokeWeight(10);
+        oop.strokeWeight(15);
         oop.noFill();
         oop.ellipse(0, 0, diameter*2, diameter*2);
         oop.fill(0, 5);
@@ -89,30 +93,21 @@ public class GOOBAvisual extends OOP {
     public void centre() {
         oop.pushMatrix();
         
-        oop.strokeWeight(5);
+        oop.strokeWeight(3);
         for (int i = 0; i < 360; i++) {
-            
-            oop.rotate(radians((blehcontrol%360)));
+            dc.changeColour(0.01f);
+            oop.rotate(radians((blehcontrol%360)+180));
             oop.pushMatrix();
             oop.translate(0, (bleh%360));
             oop.line(0,0,0,40);
             oop.popMatrix();
             bleh++;
         }
+        
         oop.popMatrix();
         blehcontrol = (float) (blehcontrol+0.01);
-        
+
       }
-
-    public void sphere() {
-        oop.pushMatrix();
-        oop.strokeWeight(1);
-        oop.rotate(bleh);
-        oop.sphere(oop.getSmoothedAmplitude() * 1500);
-        oop.popMatrix();
-
-        bleh++;
-    }
 
     public void poison() {
 
