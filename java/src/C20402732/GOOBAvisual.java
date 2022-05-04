@@ -24,7 +24,7 @@ public class GOOBAvisual extends OOP {
     public void render() {
 
         oop.calculateAverageAmplitude();
-        //oop.background(0);
+        // oop.background(0);
         oop.noFill();
         Kickflash();
         HatFlash();
@@ -36,13 +36,13 @@ public class GOOBAvisual extends OOP {
 
     public void HatFlash() {
         oop.beat.detect(oop.getAudioPlayer().mix);
-        Boolean type = oop.fBeat.HatBeat((oop.beat));
+        Boolean type = oop.fBeat.readBeat((oop.beat));
         float actualsize = map(oop.spheresize, 0, 20, 50, 100);
         oop.noFill();
         oop.strokeWeight(1);
-        oop.stroke(80,180,80);
+        oop.stroke(80, 180, 80);
         oop.pushMatrix();
-        
+
         oop.translate(oop.width / 2, oop.height / 2, 0);
         oop.sphere(actualsize);
         oop.translate(-oop.width, 0, 0);
@@ -54,7 +54,7 @@ public class GOOBAvisual extends OOP {
         oop.popMatrix();
         oop.spheresize = backgroundBeat(type, oop.spheresize);
 
-        if (oop.spheresize > 5)
+        if (oop.spheresize > 10)
             oop.spheresize -= 2;
     }
 
@@ -62,8 +62,7 @@ public class GOOBAvisual extends OOP {
         oop.beat.detect(oop.getAudioPlayer().mix);
         Boolean type = oop.fBeat.readBeat((oop.beat));
 
-
-        //oop.background(oop.screenBrightness);
+        // oop.background(oop.screenBrightness);
         oop.screenBrightness = backgroundBeat(type, oop.screenBrightness);
 
         if (oop.screenBrightness > 10)
@@ -73,54 +72,49 @@ public class GOOBAvisual extends OOP {
     public void circle() {
         oop.stroke(255, 120, 255);
         diameter = oop.getSmoothedAmplitude();
-        diameter = map(diameter, 0, 1, 400, 500);
+        diameter = map(diameter, 0, 1, 300, 370);
         oop.rotate(radians(frameCount % 360 * 2));
         oop.strokeWeight(15);
         oop.noFill();
-        oop.ellipse(0, 0, 1000, 1000);
-        
+        oop.ellipse(0, 0, diameter*2, diameter*2);
 
         oop.pushMatrix();
 
         oop.rotate(radians(frameCount % 360 * 2));
-        for (int j = 0; j < 360; j++) {
 
-            oop.line(cos(j) * 500, sin(j) * 500, cos(j) * abs(oop.getAudioPlayer().left.get(j)) * 200 + cos(j) * 500,
-                    sin(j) * abs(oop.getAudioPlayer().right.get(j)) * 200 + sin(j) * 500);
-        }
-        for (int k = 360; k > 0; k--) {
-            colour = map(k, 0,360, 0 ,255);
-            oop.stroke(k, (k+50%255, (k+100%255));
-            oop.line(cos(k) * 500, sin(k) * 500, cos(k) * abs(oop.getAudioPlayer().right.get(k)) * 200 + cos(k) * 500,
-                    sin(k) * abs(oop.getAudioPlayer().left.get(k)) * 200 + sin(k) * 500);
+        for (int k = 720; k > 0; k--) {
+            colour = (int) map(k, 0, 360, 0, 255);
+            oop.stroke(k, (k + 50 % 255), (k + 100 % 255));
+            oop.line(cos(k) * diameter, sin(k) * diameter, cos(k) * abs(oop.getAudioPlayer().right.get(k)) * diameter + cos(k) * diameter*2,
+                    sin(k) * abs(oop.getAudioPlayer().left.get(k)) * diameter + sin(k) * diameter);
         }
 
         oop.strokeWeight(1);
         oop.popMatrix();
+
     }
 
     public void centre() {
         oop.pushMatrix();
-        
+
         oop.strokeWeight(3);
-        for (int i = 0; i < 360; i++) {
+        for (int i = 0; i < 280; i++) {
             dc.changeColour(0.01f);
-            oop.rotate(radians((blehcontrol%360)+180));
+            oop.rotate(radians((blehcontrol % 360) + 180));
             oop.pushMatrix();
-            oop.translate(0, (bleh%360));
-            oop.line(0,0,0,40);
+            oop.translate(0, (bleh % 280));
+            oop.line(0, 0, 0, 40);
             oop.popMatrix();
             bleh++;
         }
-        
-        oop.popMatrix();
-        blehcontrol = (float) (blehcontrol+0.01);
 
-      }
+        oop.popMatrix();
+        blehcontrol = (float) (blehcontrol + 0.01);
+
+    }
 
     public void poison() {
 
-        
         float passed = oop.getAudioPlayer().position();
 
         float dx = map(oop.mouseX, 0, oop.width, (float) -0.2, (float) 0.2);

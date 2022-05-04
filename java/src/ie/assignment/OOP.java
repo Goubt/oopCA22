@@ -48,25 +48,6 @@ public class OOP extends Visual {
 
     public BeatDetection fBeat = new BeatDetection();
 
-    public void mouseDragged() {
-    
-        angleX += (pmouseX - mouseX) * 0.020;
-    
-        if (angleX < 0)
-            angleX = angleX % TWO_PI + TWO_PI;
-        if (angleX > TWO_PI)
-            angleX = angleX % TWO_PI;
-
-        angleY += (pmouseY - mouseY) * 0.020;
-
-        if (angleY < 0)
-            angleY = angleY % TWO_PI + TWO_PI;
-        if (angleY > TWO_PI)
-            angleY = angleY % TWO_PI;
-
-        
-    }
-
     public void keyPressed() {
         if (keyCode == LEFT && direction == 0) {
             direction -= 120;
@@ -180,8 +161,6 @@ public class OOP extends Visual {
         hint(DISABLE_DEPTH_TEST); // 2D code starts here
         camera();
         noLights();
-            text("<SELECT>", width / 2, (height) - 50);
-        }
 
         fill(0, 60);
         rect(0, 0, width * 2, height * 2);
