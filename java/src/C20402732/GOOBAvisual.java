@@ -13,6 +13,7 @@ public class GOOBAvisual extends OOP {
     }
 
     int bleh = 0;
+    float blehcontrol = 0;
     float diameter = 0;
 
     public void render() {
@@ -23,6 +24,7 @@ public class GOOBAvisual extends OOP {
         Kickflash();
         HatFlash();
         circle();
+        centre();
         // sphere();
         poison();
 
@@ -83,6 +85,24 @@ public class GOOBAvisual extends OOP {
         oop.strokeWeight(1);
         oop.popMatrix();
     }
+
+    public void centre() {
+        oop.pushMatrix();
+        
+        oop.strokeWeight(5);
+        for (int i = 0; i < 360; i++) {
+            
+            oop.rotate(radians((blehcontrol%360)));
+            oop.pushMatrix();
+            oop.translate(0, (bleh%360));
+            oop.line(0,0,0,40);
+            oop.popMatrix();
+            bleh++;
+        }
+        oop.popMatrix();
+        blehcontrol = (float) (blehcontrol+0.01);
+        
+      }
 
     public void sphere() {
         oop.pushMatrix();

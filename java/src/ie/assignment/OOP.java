@@ -130,7 +130,7 @@ public class OOP extends Visual {
         //changeBackground();
                 textSize(100);
                 textAlign(CENTER);
-                //background(0);
+                background(0);
                 camera1.feed();
                 rectMode(CENTER);
                 double third = width * 0.866;
@@ -154,9 +154,11 @@ public class OOP extends Visual {
                 if (frameCount % 60 < 30 && direction == 0) {
                     text("<SELECT>", width / 2, (height) - 50);
                 }
-                fill(0,70);
+                //fill(0,70);
                 rect(0, 0, width*2, height*2);
-
+                fill(255);
+                textSize(20);
+                text(frameRate , 50, 50);
                 hint(ENABLE_DEPTH_TEST); // 2D code ends here
 
                 if (direction > 0) {
