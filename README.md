@@ -15,6 +15,9 @@ The user "stands" in the centre of the menu, able to turn the view point between
 ## Yaris
 
 ## Finn
+For my visualiser I wanted to try and utilise some kind of fractals. I decided to use tree fractals generated circularly around a point which would alter themselves
+in amplitude and rotation depending on the sound levels from the audio. I included some forms of interactivity with the visualiser which allows the user to change the 
+amount of branches and a modifier for the trees amplitude which allows for some interesting and psychedelic patterns. The visual also provides function to manually rotate following the users mouse instead of its preset rotation. Some other features include some display options and switching rotation directions. 
 
 # Instructions
 Each menu option has its own controls that can manipulate features in each visualations.
