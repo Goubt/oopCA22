@@ -15,16 +15,16 @@ public class OOP extends Visual {
     float direction = 0;
     public Camera camera1;
 
-    //CircleLines yaris;
+    // CircleLines yaris;
 
     GOOBAvisual gooba;
-    
+
     // fractal tree
     FractalTree fv;
     int treeCount = 8;
     public float branchCount = 0;
     public float rotationCycle = 0;
-    public int changeVisual = 0;
+    public Boolean changeVisual = true;
     public int rotateDirection = 0;
     public int noBranches = 15;
     // colour
@@ -45,7 +45,8 @@ public class OOP extends Visual {
 
     int start = 90;
 
-    public int screenBrightness = 0;
+    int screenBrightness = 0;
+    Boolean lockScreenBrightness = true;
 
     public int spheresize = 0;
 
@@ -57,7 +58,7 @@ public class OOP extends Visual {
     public BeatDetect beat;
     public BeatDetection fBeat = new BeatDetection();
 
-    public boolean lock = false ;
+    public boolean lock = false;
     public boolean play = true;
 
     public void keyPressed() {
@@ -98,10 +99,10 @@ public class OOP extends Visual {
         }
 
         if (keyCode == ' ') {
-            if (play == true){
+            if (play == true) {
                 getAudioPlayer().pause();
                 play = false;
-            }else {
+            } else {
                 getAudioPlayer().play();
                 play = true;
             }
@@ -109,10 +110,10 @@ public class OOP extends Visual {
 
         if (keyPressed) {
             if ((key == 'l' || key == 'L') && menu == 0) {
-                if(lock == false)
-                lock = true;
-                else if(lock == true)
-                lock = false;
+                if (lock == false)
+                    lock = true;
+                else if (lock == true)
+                    lock = false;
                 camera1.jump(width / 2, height / 2, 0);
             }
         }
@@ -125,11 +126,11 @@ public class OOP extends Visual {
         }
 
         if (keyCode == 'C') {
-            if (changeVisual == 0)
-                changeVisual = 1;
+            if (changeVisual == false)
+                changeVisual = true;
 
             else
-                changeVisual = 0;
+                changeVisual = false;
 
         }
 
@@ -139,6 +140,15 @@ public class OOP extends Visual {
 
             else
                 hideMenu = true;
+
+        }
+
+        if (keyCode == 'B') {
+            if (lockScreenBrightness == true)
+                lockScreenBrightness = false;
+
+            else
+                lockScreenBrightness = true;
 
         }
 
@@ -164,8 +174,8 @@ public class OOP extends Visual {
     }
 
     public void settings() {
-        size(1200, 1000, P3D);
-        // fullScreen();
+        //size(1200, 1000, P3D);
+        fullScreen(P3D);
     }
 
     public void setup() {
@@ -195,10 +205,9 @@ public class OOP extends Visual {
         clGooba = new Colours();
         gooba = new GOOBAvisual(this, clGooba);
 
-        //yaris = new CircleLines(this);
+        // yaris = new CircleLines(this);
 
         clFinn = new Colours();
-        
 
     }
 
@@ -207,7 +216,7 @@ public class OOP extends Visual {
     public void draw() {
 
         calculateAverageAmplitude();
-        changeBackground();
+        changeBackground(lockScreenBrightness);
         textSize(100);
         textAlign(CENTER);
 
@@ -218,22 +227,27 @@ public class OOP extends Visual {
 
         translate(width / 2, height / 2, -width);
         pushMatrix();
-        gooba();
+
+        if (direction != 0 || menu == 0)
+            gooba();
         popMatrix();
         translate(move, 0, width + (width / 2));
         rotateY(-2 * PI / 3);
-        yaris();
+
+        if (direction != 0 || menu == 1)
+            yaris();
         rotateY(2 * PI / 3);
         translate(-2 * move, 0, 0);
         rotateY(2 * PI / 3);
-        finn();
 
+        if (direction != 0 || menu == 2)
+            finn();
         hint(DISABLE_DEPTH_TEST); // 2D code starts here
         camera();
         noLights();
 
-        fill(0, 50);
-        rect(0, 0, width * 2, height * 2);
+        fill(screenBrightness, 50);
+        rect(0, 0, (width * 2) + 10, (height * 2) + 10);
         textSize(20);
         fill(255);
         text(frameRate, 50, 50);
@@ -250,14 +264,10 @@ public class OOP extends Visual {
 
     }
 
-    public void start() {
-
-    }
-
     public void yaris() {
         pushMatrix();
-        //translate(0,0, width/2);
-        //yaris.render();
+        // translate(0,0, width/2);
+        // yaris.render();
         popMatrix();
     }
 
@@ -267,17 +277,20 @@ public class OOP extends Visual {
         fill(255);
         textSize(30);
 
-        if(hideMenu == false) {
+        if (hideMenu == false) {
             text("UP/DOWN  |  Branch Count: " + noBranches, -(width / 2) - 15, -(height / 2) - 100);
             text("SCROLL   |  Amplitude Modifier: " + Math.round(scrollVal * 100.0f) / 100.0f, -(width / 2) + 20,
                     -(height / 2) - 50);
         }
-        
+
         fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, noBranches,
                 clFinn, treeCount);
         fv.render();
-    }
 
+        stroke(255);
+        fill(255);
+        textSize(30);
+    }
 
     public void gooba() {
         gooba.render();
@@ -289,30 +302,34 @@ public class OOP extends Visual {
         ShiftUp();
     }
 
-    public int HatBeat(Boolean type, int i) {
-        if (type == true)
-            i += 2;
+    // public int HatBeat(Boolean type, int i) {
+    // if (type == true)
+    // i += 2;
 
-        return i;
-    }
+    // return i;
+    // }
 
-    public void changeBackground() {
+    public void changeBackground(Boolean b) {
 
-        BeatDetection fBeat = new BeatDetection();
-        beat.detect(getAudioPlayer().mix);
-        Boolean type = fBeat.readBeat((beat));
+        if (b == false) {
 
-        // background(screenBrightness);
-        screenBrightness = backgroundBeat(type, screenBrightness);
+            BeatDetection fBeat = new BeatDetection();
+            beat.detect(getAudioPlayer().mix);
+            Boolean type = fBeat.readBeat((beat));
 
-        if (screenBrightness > 10)
-            screenBrightness -= 2;
+            // background(screenBrightness);
+            screenBrightness = backgroundBeat(type, screenBrightness);
+
+            if (screenBrightness > 10)
+                screenBrightness -= 3;
+
+        }
     }
 
     public int backgroundBeat(Boolean type, int i) {
 
         if (type == true)
-            i += 20;
+            i += 25;
 
         return i;
     }
@@ -336,7 +353,9 @@ public class OOP extends Visual {
 
         else if (mouseRotation > 1)
             rotationAngle += PI * 2;
+
         rotationAngle += (mouseVal - rotationAngle) * easing;
 
     }
+
 }

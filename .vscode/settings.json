@@ -26,5 +26,8 @@
         "java/lib/sqlite-jdbc-3.23.1.jar",
         "java/lib/tritonus_aos.jar",
         "java/lib/tritonus_share.jar"
+    ],
+    "java.project.sourcePaths": [
+        "java/src"
     ]
 }
