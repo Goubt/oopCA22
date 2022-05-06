@@ -1,20 +1,20 @@
 # Music Visualiser Project
 
-Name: Aleksey, Finn, Yaris
+Name: Aleksey Makarevich, Finn Maguire, Yaroslav Hrabas
 
 Student Number: C20402732, C20492576, C20394791
 
-## Instructions
-- Fork this repository and use it a starter project for your assignment
-- Create a new package named your student number and put all your code in this package.
-- You should start by creating a subclass of ie.tudublin.Visual
-- There is an example visualiser called MyVisual in the example package
-- Check out the WaveForm and AudioBandsVisual for examples of how to call the Processing functions from other classes that are not subclasses of PApplet
+Songs: Poison 
 
 # Description of the assignment
-
+Our assignment consists of a rotating menu. This was done as a challenge, seeing if we could utilise the camera to move around within the 3d space.
+The user "stands" in the centre of the menu, able to turn the view point between the three visualations while it changes the song to match the visualisation.
 # Instructions
+Each menu option has its own controls that can manipulate features in each visualations.
 
+## The Global Controls
+- Right arrow rotates the menu one slot to the right.
+- Left arrow rotates the menu one slow to the left.
 # How it works
 
 # What I am most proud of in the assignment

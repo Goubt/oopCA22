@@ -51,8 +51,10 @@ public class OOP extends Visual {
 
     public BeatDetection fBeat = new BeatDetection();
 
+    public int lock = 0 ;
+
     public void keyPressed() {
-        if (keyCode == LEFT && direction == 0) {
+        if (keyCode == LEFT && direction == 0 && lock == 0) {
             direction -= 120;
 
             if (menu == 0)
@@ -64,7 +66,7 @@ public class OOP extends Visual {
             loadMusic(Songs[menu]);
         }
 
-        if (keyCode == RIGHT && direction == 0) {
+        if (keyCode == RIGHT && direction == 0 && lock == 0) {
             direction += 120;
 
             if (menu == 2)
@@ -84,8 +86,6 @@ public class OOP extends Visual {
         }
 
         if (key == BACKSPACE) {
-            Choice = 4;
-
             getAudioPlayer().rewind();
         }
 
@@ -93,6 +93,15 @@ public class OOP extends Visual {
             getAudioPlayer().cue(53000);
         }
 
+        if (keyPressed) {
+            if ((key == 'l' || key == 'L') && menu == 0) {
+                if(lock == 0)
+                lock = 1;
+                else if(lock == 1)
+                lock = 0;
+                camera1.jump(width / 2, height / 2, 0);
+            }
+        }
     }
 
     public void settings() {
@@ -188,7 +197,8 @@ public class OOP extends Visual {
 
     public void yaris() {
         pushMatrix();
-        yaris.render();
+        //translate(0,0, width/2);
+        //yaris.render();
         popMatrix();
     }
 

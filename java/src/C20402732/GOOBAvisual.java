@@ -24,20 +24,38 @@ public class GOOBAvisual extends OOP {
     int limit = 300;
     int rotation = 0;
     int spiral = 0;
+    int lock = 0;
+    int dolly = 0;
     
 
     public void render() {
-
         oop.calculateAverageAmplitude();
-        // oop.background(0);
+        dolly();
         oop.noFill();
         oop.pushMatrix();
         shrinkngrow();
         circle();
         centre();
         poison();
-
         oop.popMatrix();
+        
+    }
+
+    public void dolly(){
+        if(oop.lock == 0)
+            dolly = 0;
+        if (oop.keyPressed) {
+            if ((oop.key == 'i' || oop.key == 'I') && oop.lock == 1 && dolly > -100) {
+                    oop.camera1.dolly(-10);
+                    dolly--;
+            }
+        }
+        if (oop.keyPressed) {
+            if ((oop.key == 'k' || oop.key == 'K') && oop.lock == 1 && dolly < 100) {
+                    oop.camera1.dolly(10);
+                    dolly++;
+            }
+        }
     }
 
     public void circle() {
@@ -98,7 +116,7 @@ public class GOOBAvisual extends OOP {
         oop.pushMatrix();
         hypnogrow = map(diameter, limit, limit + 70, limit - 30, limit - 10);
         oop.strokeWeight(3);
-        for (int i = 0; i < hypnogrow/2; i++) {
+        for (int i = 0; i < hypnogrow; i++) {
             dc.changeColour(0.05f);
             oop.rotate(radians((hypnocontrol % 360) + 180));
             oop.pushMatrix();
