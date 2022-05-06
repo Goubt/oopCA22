@@ -69,7 +69,7 @@ public class FractalTree extends PApplet {
         tree.rotationCycle++;
 
         //tree.rotate(OOP.map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4));
-        println(tree.rotateTree);
+        //println(tree.rotateTree);
         tree.rotate(tree.rotateTree);
 
         for (int i = 0; i < 8; i++) {

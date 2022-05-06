@@ -1,8 +1,8 @@
 # Music Visualiser Project
 
-Name: Goubt, Finn, Yaris
+Name: Aleksey, Finn, Yaris
 
-Student Number: 
+Student Number: C20402732, C20492576, C20394791
 
 ## Instructions
 - Fork this repository and use it a starter project for your assignment
@@ -18,6 +18,11 @@ Student Number:
 # How it works
 
 # What I am most proud of in the assignment
+Aleksey 
+
+Finn
+
+Yaris
 
 # Markdown Tutorial
 

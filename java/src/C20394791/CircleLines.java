@@ -1,188 +1,340 @@
 package C20394791;
 
-import ddf.minim.Minim;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
 import ie.assignment.OOP;
-import ie.assignment.Visual;
-import ie.assignment.VisualException;
-import processing.core.PVector;
 
 
-public class CircleLines extends OOP{
+// ***************************************************
+// *** SETTING UP VARIABLES FOR THE SOUND ANALYSIS ***
+// ***************************************************
 
+
+// *********************************************
+// *** SETTING UP VARIABLES FOR THE GRAPHICS ***
+// *********************************************
+
+
+public class CircleLines extends OOP {
+  
   OOP oop;
 
-    public CircleLines(OOP oop) {
-        this.oop = oop;
-    }
+  public CircleLines(OOP oop) {
+      this.oop = oop;
+  }
+  int bass;
+  int snare;
+  float noise;
 
-  int canvasWidth = 1080;
-  int canvasHeight = 1080;
+  //int selector, weight;
+  int topLx, topLy, topCx, topCy, topRx, topRy; // These are the values for kickbox beat top row
+  int midLx, midLy, midCx, midCy, midRx, midRy; // These are the values for kickbox beat middle row
+  int botLx, botLy, botCx, botCy, botRx, botRy; // These are the values for kickbox beat bottom row
+  //int driftX;
+  //float randomRotateAmt;
+  //int circlepop;
+  //int circleLoc;
+  //float arcLength;
+  float xoffset = (float) 0.0;
+  float yrise = (float) 0.0;
+  int col;
+  int colorarray[];
 
-  String audioFileName = "GUMMY.mp3";
-
-  float fps = 30;
-  float smoothingFactor = 0.25f;
 
 
 
-  int bands = 256;
-  float[] spectrum = new float[bands];
-  float[] sum = new float[bands];
+  int selector = 2; 
+  int weight = 1;
+  int kickboxSens = 125;
+ 
+  int snareSens = 5;
+  
+// ********************************************************
+// *** SETTING UP FOR SQUARE, CIRCLE AND SPIRAL VISUALS ***
+// ********************************************************
+  int driftX = 0;
+  float randomRotateAmt = random(1, 24);
 
-  float unit;
-  int groundLineY;
-  PVector center;
+  int circlepop = 0;
+  int circleLoc = width/2;
+
+  float arcLength = (float) 0.0005;
   
 
-
-  public void strokeWeight(double d) {
-  }
-
-  public void frameRate(float fps2) {
-  }
-
-  int sphereRadius;
-
-  float spherePrevX;
-  float spherePrevY;
-
-  int yOffset;
-
-  boolean initialStatic = true;
-  float[] extendingSphereLinesRadius;
-
-  void drawStatic() {
-    center = new PVector(oop.width/2, oop.height/2);
-    if (initialStatic) {
-      extendingSphereLinesRadius = new float[241];
-
-      for (int angle = 0; angle <= 240; angle += 4) {
-        int i = (int) random(1);
-        extendingSphereLinesRadius[angle] = map(random(1), 0, 1, sphereRadius, sphereRadius * 7);
-      }
-
-      initialStatic = false;
+public void render() {
+  
+  oop.getFFT().forward(oop.getAudioPlayer().mix); 
+  bass = (int) (oop.getFFT().getFreq(50)); 
+  snare = (int) (oop.getFFT().getFreq(1760)); 
+  noise = map(oop.getFFT().getFreq(19000), 0, 1, 0, 500); 
+  if (bass>kickboxSens && frameCount>300) {
+    selector = floor(random(1, (float) 5.57)); 
+    weight = (int) (random(1, 50)); 
+  } else {
+    if (snare>snareSens) {
+      weight = (int) (random(1, 65));
     }
+  }
+  
+  if (selector==1) {
+    oop.strokeWeight(weight + noise/15);
+    oop.square(20, 20, 1);
+  }
+  if (selector==2) {
+    if (bass>kickboxSens/3 & frameCount>600) {
+      oop.strokeWeight(weight + noise/15);
+      oop.square(20, 20, 0);
+    } else {
+      circlepop();
+      fxRain();
+    }
+  }
+  if (selector==2) {
+    kickbox(50, bass, "warm", 2);
+    if (bass>kickboxSens) {
+      selector = floor(random(1, (float) 2.99)); 
+    }
+  }
+  if (selector==2) {
+    kickbox(50, bass, "cool", 1);
+    if (bass>kickboxSens) {
+      selector = floor(random(1, (float) 2.99)); 
+    }
+  }
+  if (selector==2) {
+    spiral();
+  }
+  
+  if (mousePressed) {
+    oop.fill(255);
+    oop.textSize(12);
+    oop.text(kickboxSens, width-40, 30);
+    oop.text(bass, width-80, 30);
+    oop.text(snareSens, width-120, 30);
+    oop.text(snare, width-160, 30); 
+  }
+  
+  if (noise < 1) {
+    selector = 2;
+  }
+  
+  
+  //if (oop.getAudioPlayer().isPlaying() == false) {
+  //    selector = 2;
+  //    oop.getAudioPlayer() = minim.loadFile("GUMMY.mp3", 1024);
+  //    oop.getAudioPlayer().rewind();
+  //    oop.getAudioPlayer().play();
+  //}
+  
+}
 
-    for (int angle = 0; angle <= 240; angle += 4) {
+//void keyPressed() 
+//{
+//  if (key == ' ') 
+//  {
+//    if (oop.getAudioPlayer().isPlaying()) 
+//    {
+//      oop.getAudioPlayer().pause();  
+//    } else 
+//    {
+//      oop.getAudioPlayer().play();
+//    }
+//  }
+//  if (key == CODED) {
+//    if (keyCode == UP) {
+//      kickboxSens = kickboxSens + 10;
+//      
+//    }
+//  }
+//  if (key == CODED) {
+//    if (keyCode == DOWN) {
+//      kickboxSens = kickboxSens - 10;
+//      
+//    }
+//  }
+//  
+//  if (key == CODED) {
+//    if (keyCode == RIGHT) {
+//      snareSens = snareSens + 5;
+//      
+//    }
+//  }
+//  if (key == CODED) {
+//    if (keyCode == LEFT) {
+//      snareSens = snareSens - 5;
+//      
+//    }
+//  }
+//}
 
-      float x = round(cos(radians(angle + 150)) * sphereRadius + center.x);
-      float y = round(sin(radians(angle + 150)) * sphereRadius + groundLineY - yOffset);
+// **********************************
+// *** DRAWING THE ACTUAL VISUALS ***
+// **********************************
 
-      float xDestination = x;
-      float yDestination = y;
+void kickbox(int margin, int kickjerk, String colorMode, int thickness) {
+  
+ 
+  topLx = (int) (margin+(random(-kickjerk, kickjerk)));
+  topLy = (int) (margin+(random(-kickjerk, kickjerk)));
+  topCx = (int) (width/2+(random(-kickjerk, kickjerk)));
+  topCy = (int) (margin+(random(-kickjerk, kickjerk)));
+  topRx = (int) (width-margin+(random(-kickjerk, kickjerk)));
+  topRy = (int) (margin+(random(-kickjerk, kickjerk)));
+  
+  midLx = (int) (margin+(random(-kickjerk, kickjerk)));
+  midLy = (int) (height/2+(random(-kickjerk, kickjerk)));
+  midCx = (int) (width/2+(random(-kickjerk, kickjerk)));
+  midCy = (int) (height/2+(random(-kickjerk, kickjerk)));
+  midRx = (int) (width-margin+(random(-kickjerk, kickjerk)));
+  midRy = (int) (height/2+(random(-kickjerk, kickjerk)));
+  
+  botLx = (int) (margin+(random(-kickjerk, kickjerk)));
+  botLy = (int) (height-margin+(random(-kickjerk, kickjerk)));
+  botCx = (int) (width/2+(random(-kickjerk, kickjerk)));
+  botCy = (int) (height-margin+(random(-kickjerk, kickjerk)));
+  botRx = (int) (width-margin+(random(-kickjerk, kickjerk)));
+  botRy = (int) (height-margin+(random(-kickjerk, kickjerk)));
 
-      for (int i = sphereRadius; i <= extendingSphereLinesRadius[angle]; i++) {
-        float x2 = cos(radians(angle + 150)) * i + center.x;
-        float y2 = sin(radians(angle + 150)) * i + groundLineY - yOffset;
-        
-        if (y2 <= getGroundY(x2)) {
-          xDestination = x2;
-          yDestination = y2;
-        }
-        
-      }
+  if (colorMode == "cool") {
+    if (bass>kickboxSens) {
+      oop.stroke(0, random(200, 255), random(150, 255), 230);
+    } else { 
+      oop.noStroke();
+    }
+  }
+  if (colorMode == "warm") {
+    if (bass>kickboxSens) {
+      oop.stroke(random(180, 255), random(50, 75), random(30, 60), 230);
+    } else { 
+      oop.noStroke();
+    }
+  }
+  oop.strokeWeight(random(thickness, thickness+10));
+  
+  oop.line(topLx, topLy, topCx, topCy);
+  oop.line(topCx, topCy, topRx, topRy);
+  oop.line(midLx, midLy, midCx, midCy);
+  oop.line(midCx, midCy, midRx, midRy);
+  oop.line(botLx, botLy, botCx, botCy);
+  oop.line(botCx, botCy, botRx, botRy);
+ 
+  oop.line(topLx, topLy, midLx, midLy);
+  oop.line(topCx, topCy, midCx, midCy);
+  oop.line(topRx, topRy, midRx, midRy);
+  oop.line(midLx, midLy, botLx, botLy);
+  oop.line(midCx, midCy, botCx, botCy);
+  oop.line(midRx, midRy, botRx, botRy);
+}
+
+
+void square(int rectWidth, int rectHeight, int colorON) {
+  
+  oop.pushMatrix();
+  driftX = driftX - 5;
+  if (driftX<-width*3) {
+    driftX = 0;
+  }
+  if (bass>kickboxSens) {
+    randomRotateAmt = random(1, 24);
+    if (colorON==1) {
+      oop.stroke(random(125, 255), random(125, 255), random(125, 255));
+    }
+    if (colorON==0) {
       oop.stroke(255);
-      
-      if (y <= getGroundY(x)) {
-        oop.line(x, y, xDestination, yDestination);
-      }
-      
     }
   }
-  /*
-  private Object random(int i) {
-    return null;
-  }*/
-
-  private float getGroundY (float x2) {
-    return 0; 
-    }
-
-  private int cos(Object radians) {
-    return 0;
-  }
-
-  private int sin(Object radians) {
-    return 0;
-  }
-
-  private Object radians(int i) {
-    return null;
-  }
-
-  void drawAll(float[] sum) {
-
-    sphereRadius = (int) (15 * round(unit));
-
-    spherePrevX = 0;
-    spherePrevY = 0;
-
-    yOffset = (int) round(sin(radians(150)) * sphereRadius);
-
-    drawStatic();
-
-    // Lines surrounding
-    float x = 0;
-    float y = 0;
-    int surrCount = 1;
-
-    boolean direction = false;
-
-    while (x < oop.width * 1.5 && x > 0 - oop.width / 2) {
-
-      float surroundingRadius;
-
-      float surrRadMin = sphereRadius + sphereRadius * 1 / 2 * surrCount;
-      float surrRadMax = surrRadMin + surrRadMin * 1 / 8;
-
-      float surrYOffset;
-
-      float addon = (float) (oop.frameCount * 1.5);
-
-      if (direction) {
-        addon = (float) (addon * 1.5);
-      }
-
-      for (float angle = 0; angle <= 240; angle += 1.5) {
-
-        surroundingRadius = map(sin(radians(angle * 7 + addon)), -1, 1, surrRadMin, surrRadMax);
-
-        surrYOffset = sin(radians(150)) * surroundingRadius;
-
-        x = round(cos(radians(angle + 150)) * surroundingRadius + center.x);
-        y = round(sin(radians(angle + 150)) * surroundingRadius + getGroundY(x) - surrYOffset);
-
-        oop.noStroke();
-        oop.fill(map(surroundingRadius, surrRadMin, surrRadMax, 100, 255));
-        oop.circle(x, y, (float) ((float) 3 * unit / 10.24));
-        oop.noFill();
-      }
-
-      direction = !direction;
-
-      surrCount += 1;
+  oop.translate(driftX, 0);
+  for (int iX = 20; iX<width*12; iX=iX+40) {
+    for (int iY = 20; iY<height; iY=iY+40) {
+      oop.noFill();
+      oop.rotateY(randomRotateAmt);
+      oop.rect(iX, iY, rectWidth, rectHeight);
     }
   }
+  oop.popMatrix();
+}
 
-  // code removed here
+// *************************************
+// *** CIRCLES WITH TRIANGLES VISUAL ***
+// *************************************
 
-  public void render() {
-    oop.getFFT().forward(oop.getAudioPlayer().mix);
-
-    spectrum = new float[bands];
-
-    for (int i = 0; i < oop.getFFT().avgSize(); i++) {
-      spectrum[i] = oop.getFFT().getAvg(i) / 2;
-
-      sum[i] += (abs(spectrum[i]) - sum[i]) * smoothingFactor;
-    }
-
-    oop.fill(0);
-    oop.noStroke();
-    oop.rect(0, 0, oop.width, oop.height);
+void circlepop() {
+  if(circleLoc==width){
+    circleLoc = 0;
+  } else { circleLoc = circleLoc + 1; }
+  oop.pushMatrix();
+  oop.translate(circleLoc, height/2);
+  oop.fill(255);
+  oop.noStroke();
+  oop.ellipse(0, 0, noise, noise);
+  oop.ellipse(-width/2, 0, noise, noise);
+  oop.ellipse(width/2, 0, noise, noise);
+  oop.fill(0);
+  oop.ellipse(0, 0, ((float)(noise/1.1)), ((float)(noise/1.1)));
+  oop.ellipse(-width/2, 0, ((float)(noise/1.1)), ((float)(noise/1.1)));
+  oop.ellipse(width/2, 0, ((float)(noise/1.1)), ((float)(noise/1.1)));
+  if (noise>500) {
+    oop.stroke(255);
+    oop.strokeWeight(1);
     oop.noFill();
-
-    drawAll(sum);
+    oop.triangle(random(-600, 600), random(-600, 600), random(-600, 600), random(-600, 600), random(-600, 600), random(-600, 600)); 
   }
+  oop.popMatrix();
+}
+
+// ***************************************
+// *** DRAWING THE CIRCLE LINES SPIRAL ***
+// ***************************************
+void spiral() {
+  oop.noFill();
+  arcLength = (float) (arcLength + 0.0001);
+  if (arcLength == 10) {
+    arcLength = (float) 0.0005;
+  }
+  oop.stroke(255);
+  oop.translate(width/2, height/2);
+  for (int r=50; r<650; r=r+5) {
+    oop.rotate((float) (millis()/2000.0));
+    oop.strokeWeight(3);
+    oop.arc(0, 0, r*bass/10, r*bass/10, 0, arcLength);
+  }
+}
+
+
+void squarebloom(int basesize) {
+  xoffset = (float) (xoffset + .01);
+  yrise = yrise - 1;
+  if (yrise<-(height+15)) {
+    yrise=0;
+    oop.noStroke();
+    oop.fill(0, 0, 0, 200);
+    oop.rect(0, 0, width, height);
+  }
+  float n = noise(xoffset) * bass*2;
+  //println(n);
+  oop.strokeWeight(1);
+  col = color(colorarray[(int)random(0, 5)]);
+  oop.noFill();
+  oop.stroke(col);
+  oop.rect(width/2+5+n, height+15+yrise, basesize+bass/10, basesize+bass/10);
+  oop.stroke(col);
+  oop.rect(width/2-5-n, 0-15-yrise, basesize+bass/10, basesize+bass/10);
+}
+
+// ********************************
+// *** GRAINY BACKGROUND EFFECT ***
+// ********************************
+
+void fxRain() {
+  oop.fill(255);
+  oop.textSize(random(noise));
+  oop.text("l", random(width), random(height));
+}
+
+void fxGrain() {
+  oop.fill(255);
+  oop.textSize(random(noise));
+  oop.text(".", random(width), random(height));
+  oop.text(".", random(width), random(height));
+}
 }

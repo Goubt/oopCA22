@@ -8,16 +8,19 @@ import processing.core.PVector;
 
 public class ParticleSystem {
 
-  ArrayList<Particle> particles; // An arraylist for all the particles
-  PVector origin; // An origin point for where particles are birthed
+  ArrayList<Particle> particles; 
+  PVector origin; 
   PImage img;
   PApplet pa;
 
   public ParticleSystem(int num, PVector v, PImage img_, PApplet pa) {
-    particles = new ArrayList<Particle>(); // Initialize the arraylist
-    origin = v.copy(); // Store the origin point
-    img = img_;
     this.pa = pa;
+    
+    // Initialize the arraylist
+    particles = new ArrayList<Particle>();
+
+    origin = v.copy();
+    img = img_;
     for (int i = 0; i < num; i++) {
       particles.add(new Particle(origin, img, pa)); // Add "num" amount of particles to the arraylist
     }
@@ -33,14 +36,14 @@ public class ParticleSystem {
     }
   }
 
-  // Method to add a force vector to all particles currently in the system
+  // Applies force which is directed at the mouse
   void applyForce(PVector dir) {
-    // Enhanced loop!!!
     for (Particle p : particles) {
       p.applyForce(dir);
     }
   }
 
+  // Creates new particle
   void addParticle() {
     particles.add(new Particle(origin, img, pa));
   }

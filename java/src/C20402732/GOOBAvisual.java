@@ -16,107 +16,107 @@ public class GOOBAvisual extends OOP {
 
     DynamicColour dc;
 
-    int bleh = 0;
-    float blehcontrol = 0;
+    int hypno = 0;
+    float hypnocontrol = 0;
+    float hypnogrow = 0;
     float diameter = 0;
     int colour = 0;
+    int limit = 300;
+    int rotation = 0;
+    int spiral = 0;
+    
 
     public void render() {
 
         oop.calculateAverageAmplitude();
         // oop.background(0);
         oop.noFill();
-        Kickflash();
-        HatFlash();
+        oop.pushMatrix();
+        shrinkngrow();
         circle();
         centre();
         poison();
 
-    }
-
-    public void HatFlash() {
-        oop.beat.detect(oop.getAudioPlayer().mix);
-        Boolean type = oop.fBeat.readBeat((oop.beat));
-        float actualsize = map(oop.spheresize, 0, 20, 50, 100);
-        oop.noFill();
-        oop.strokeWeight(1);
-        oop.stroke(80, 180, 80);
-        oop.pushMatrix();
-
-        oop.translate(oop.width / 2, oop.height / 2, 0);
-        oop.sphere(actualsize);
-        oop.translate(-oop.width, 0, 0);
-        oop.sphere(actualsize);
-        oop.translate(0, -oop.height, 0);
-        oop.sphere(actualsize);
-        oop.translate(oop.width, 0, 0);
-        oop.sphere(actualsize);
         oop.popMatrix();
-        oop.spheresize = backgroundBeat(type, oop.spheresize);
-
-        if (oop.spheresize > 10)
-            oop.spheresize -= 2;
-    }
-
-    public void Kickflash() {
-        oop.beat.detect(oop.getAudioPlayer().mix);
-        Boolean type = oop.fBeat.readBeat((oop.beat));
-
-        // oop.background(oop.screenBrightness);
-        oop.screenBrightness = backgroundBeat(type, oop.screenBrightness);
-
-        if (oop.screenBrightness > 10)
-            oop.screenBrightness -= 2;
     }
 
     public void circle() {
         oop.stroke(255, 120, 255);
         diameter = oop.getSmoothedAmplitude();
-        diameter = map(diameter, 0, 1, 300, 370);
+        diameter = map(diameter, 0, 1, limit, limit + 70);
         oop.rotate(radians(frameCount % 360 * 2));
-        oop.strokeWeight(15);
+        oop.strokeWeight(5);
         oop.noFill();
-        oop.ellipse(0, 0, diameter*2, diameter*2);
+        oop.ellipse(0, 0, diameter * 2, diameter * 2);
 
         oop.pushMatrix();
 
         oop.rotate(radians(frameCount % 360 * 2));
 
-        for (int k = 720; k > 0; k--) {
+        for (int k = 0; k < 720; k++) {
             colour = (int) map(k, 0, 360, 0, 255);
-            oop.stroke(k, (k + 50 % 255), (k + 100 % 255));
-            oop.line(cos(k) * diameter, sin(k) * diameter, cos(k) * abs(oop.getAudioPlayer().right.get(k)) * diameter + cos(k) * diameter*2,
-                    sin(k) * abs(oop.getAudioPlayer().left.get(k)) * diameter + sin(k) * diameter);
-        }
+            int change = spiral % 3;
+            if (k % 3 == change)
+                oop.stroke(200,200,200);
+            if (k % 3 == (change+1)%3)
+                oop.stroke(128,0,128);
+            if (k % 3 == (change+2)%3)
+                oop.stroke(0,200,0);
+        
 
+            oop.line(cos(k) * diameter, sin(k) * diameter,
+                    cos(k) * oop.getSmoothedAmplitude()* diameter + cos(k) * diameter * 2,
+                    sin(k) * oop.getSmoothedAmplitude() * diameter + sin(k) * diameter);
+            oop.circle(cos(k) * oop.getSmoothedAmplitude() * diameter + cos(k) * diameter * 2, sin(k) * oop.getSmoothedAmplitude() * diameter + sin(k) * diameter, 8);
+        } 
+        if (oop.frameCount % 10 == 2)
+            spiral++;
         oop.strokeWeight(1);
         oop.popMatrix();
 
     }
 
+    public void shrinkngrow() {
+        int time = oop.getAudioPlayer().position();
+        if ((time > 53500 && time < 76000 && limit > 100) || (time > 94500 && limit != 300)) {
+            limit--;
+        }
+        if (time > 76000 && time < 94500) {
+            limit++;
+            oop.rotate(0);
+        }
+        
+        if (limit == 100 && time > 58000 && time < 76000) {
+            oop.rotate(radians(rotation));
+            rotation++;
+            oop.triangle(0, (float) (-limit * 7.5), limit * 6, (float) (limit * 4.5), -limit * 6,
+                    (float) (limit * 4.5));
+        }
+    }
+
     public void centre() {
         oop.pushMatrix();
-
+        hypnogrow = map(diameter, limit, limit + 70, limit - 30, limit - 10);
         oop.strokeWeight(3);
-        for (int i = 0; i < 280; i++) {
-            dc.changeColour(0.01f);
-            oop.rotate(radians((blehcontrol % 360) + 180));
+        for (int i = 0; i < hypnogrow/2; i++) {
+            dc.changeColour(0.05f);
+            oop.rotate(radians((hypnocontrol % 360) + 180));
             oop.pushMatrix();
-            oop.translate(0, (bleh % 280));
-            oop.line(0, 0, 0, 40);
+            oop.translate(0, (hypno % limit), -i);
+            oop.line(0, 0, 0, (float) (limit / 7.5));
             oop.popMatrix();
-            bleh++;
+            hypno++;
         }
 
         oop.popMatrix();
-        blehcontrol = (float) (blehcontrol + 0.01);
+        hypnocontrol = (float) (hypnocontrol + 0.01);
 
     }
 
     public void poison() {
 
         float passed = oop.getAudioPlayer().position();
-
+        
         float dx = map(oop.mouseX, 0, oop.width, (float) -0.2, (float) 0.2);
         PVector wind = new PVector(dx, 0);
         OOP.tlps.applyForce(wind);

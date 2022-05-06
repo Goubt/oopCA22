@@ -1,5 +1,6 @@
 package ie.assignment;
 
+import C20394791.CircleLines;
 import C20402732.*;
 import C20492576.*;
 import C20492576.FractalTree;
@@ -14,6 +15,8 @@ public class OOP extends Visual {
     float rotation = 0;
     float direction = 0;
     public Camera camera1;
+
+    CircleLines yaris;
 
     GOOBAvisual gooba;
     public Colours clGooba;
@@ -58,8 +61,6 @@ public class OOP extends Visual {
             else
                 menu--;
 
-            print(menu);
-
             loadMusic(Songs[menu]);
         }
 
@@ -71,8 +72,6 @@ public class OOP extends Visual {
 
             else
                 menu++;
-
-            print(menu);
 
             loadMusic(Songs[menu]);
         }
@@ -91,7 +90,7 @@ public class OOP extends Visual {
         }
 
         if (keyCode == ' ') {
-            getAudioPlayer().cue(110000);
+            getAudioPlayer().cue(53000);
         }
 
     }
@@ -125,7 +124,10 @@ public class OOP extends Visual {
                 0, 1, 0);
 
         lerpedBuffer = new float[width];
+        
         gooba = new GOOBAvisual(this);
+
+        yaris = new CircleLines(this);
 
         clFinn = new Colours();
         clGooba = new Colours();
@@ -185,11 +187,9 @@ public class OOP extends Visual {
     }
 
     public void yaris() {
-
-        stroke(255, 0, 0);
-        noFill();
-        box(100);
-        rect(0, 0, width - 100, height - 100);
+        pushMatrix();
+        yaris.render();
+        popMatrix();
     }
 
     public void finn() {
