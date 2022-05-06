@@ -1,5 +1,7 @@
 package C20394791;
 
+import C20492576.Colours;
+import C20492576.DynamicColour;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ie.assignment.OOP;
@@ -18,9 +20,11 @@ import ie.assignment.OOP;
 public class CircleLines extends OOP {
   
   OOP oop;
+  DynamicColour ydc;
 
-  public CircleLines(OOP oop) {
+  public CircleLines(OOP oop, Colours ycl) {
       this.oop = oop;
+      ydc = new DynamicColour(oop, ycl);
   }
   int bass;
   int snare;
@@ -76,26 +80,26 @@ public void render() {
     }
   }
   
-  if (selector==1) {
-    oop.strokeWeight(weight + noise/15);
-    oop.square(20, 20, 1);
-  }
   if (selector==2) {
+    oop.strokeWeight(weight + noise/15);
+    square(20, 20, 1);
+  }
+  if (selector==3) {
     if (bass>kickboxSens/3 & frameCount>600) {
       oop.strokeWeight(weight + noise/15);
-      oop.square(20, 20, 0);
+      square(20, 20, 0);
     } else {
       circlepop();
       fxRain();
     }
   }
-  if (selector==2) {
+  if (selector==4) {
     kickbox(50, bass, "warm", 2);
     if (bass>kickboxSens) {
       selector = floor(random(1, (float) 2.99)); 
     }
   }
-  if (selector==2) {
+  if (selector==5) {
     kickbox(50, bass, "cool", 1);
     if (bass>kickboxSens) {
       selector = floor(random(1, (float) 2.99)); 
@@ -230,6 +234,7 @@ void kickbox(int margin, int kickjerk, String colorMode, int thickness) {
 void square(int rectWidth, int rectHeight, int colorON) {
   
   oop.pushMatrix();
+ 
   driftX = driftX - 5;
   if (driftX<-width*3) {
     driftX = 0;
@@ -245,12 +250,14 @@ void square(int rectWidth, int rectHeight, int colorON) {
   }
   oop.translate(driftX, 0);
   for (int iX = 20; iX<width*12; iX=iX+40) {
+    
     for (int iY = 20; iY<height; iY=iY+40) {
       oop.noFill();
       oop.rotateY(randomRotateAmt);
       oop.rect(iX, iY, rectWidth, rectHeight);
     }
   }
+  
   oop.popMatrix();
 }
 
@@ -294,6 +301,7 @@ void spiral() {
   oop.stroke(255);
   oop.translate(width/2, height/2);
   for (int r=50; r<650; r=r+5) {
+    ydc.changeColour(0.1f);
     oop.rotate((float) (millis()/2000.0));
     oop.strokeWeight(3);
     oop.arc(0, 0, r*bass/10, r*bass/10, 0, arcLength);

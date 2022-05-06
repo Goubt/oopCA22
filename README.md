@@ -4,7 +4,7 @@ Name: Aleksey Makarevich, Finn Maguire, Yaroslav Hrabas
 
 Student Number: C20402732, C20492576, C20394791
 
-Songs: Poison 
+Songs: Poison, Gummi Bear Song, DARE
 
 # Description of the assignment
 Our assignment consists of a rotating menu. This was done as a challenge, seeing if we could utilise the camera to move around within the 3d space.
@@ -13,16 +13,33 @@ The user "stands" in the centre of the menu, able to turn the view point between
 Each menu option has its own controls that can manipulate features in each visualations.
 
 ## The Global Controls
-- Right arrow rotates the menu one slot to the right.
-- Left arrow rotates the menu one slow to the left.
+- "Right arrow" rotates the menu one slot to the right.
+- "Left arrow" rotates the menu one slow to the left.
+- "Space bar" to pause / play the music.
+- "B" to turn on/off background beat brightness.
+
+## Poison controls
+- Mouse controls direction the poison bubbles move in.
+- "L" to lock/unlock camera.
+With camera locked you can now
+- "K" to move back from the visual.
+- "I" to move in towards the visual.
+
+## Dare controls
+- "X"
+- "C"
+- "H"
+- "Up Arrow"
+- "Down Arrow"
+
 # How it works
 
-# What I am most proud of in the assignment
-Aleksey 
+# What we are most proud of in the assignment
+### Aleksey 
 
-Finn
+### Finn
 
-Yaris
+### Yaris
 
 # Markdown Tutorial
 

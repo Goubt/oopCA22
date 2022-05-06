@@ -1,5 +1,6 @@
 package ie.assignment;
 
+import C20394791.CircleLines;
 import C20402732.*;
 import C20492576.*;
 import damkjer.ocd.*;
@@ -15,7 +16,7 @@ public class OOP extends Visual {
     float direction = 0;
     public Camera camera1;
 
-    //CircleLines yaris;
+    CircleLines yaris;
 
     GOOBAvisual gooba;
     
@@ -28,6 +29,7 @@ public class OOP extends Visual {
     public int rotateDirection = 0;
     public int noBranches = 15;
     // colour
+    public Colours clYaris;
     public Colours clFinn;
     public Colours clGooba;
 
@@ -108,7 +110,7 @@ public class OOP extends Visual {
         }
 
         if (keyPressed) {
-            if ((key == 'l' || key == 'L') && menu == 0) {
+            if ((key == 'l' || key == 'L') && menu == 0 && direction == 0) {
                 if(lock == false)
                 lock = true;
                 else if(lock == true)
@@ -164,8 +166,8 @@ public class OOP extends Visual {
     }
 
     public void settings() {
-        size(1200, 1000, P3D);
-        // fullScreen();
+        //size(1200, 1000, P3D);
+        fullScreen(P3D);
     }
 
     public void setup() {
@@ -194,8 +196,9 @@ public class OOP extends Visual {
 
         clGooba = new Colours();
         gooba = new GOOBAvisual(this, clGooba);
+        clYaris = new Colours();
 
-        //yaris = new CircleLines(this);
+        yaris = new CircleLines(this, clYaris);
 
         clFinn = new Colours();
         
@@ -218,22 +221,24 @@ public class OOP extends Visual {
 
         translate(width / 2, height / 2, -width);
         pushMatrix();
-        gooba();
+        if((menu == 1 && direction > 0) || (menu == 2 && direction < 0) || (menu == 0))
+            gooba();
         popMatrix();
         translate(move, 0, width + (width / 2));
         rotateY(-2 * PI / 3);
-        yaris();
+        if((menu == 2 && direction > 0) || (menu == 0 && direction < 0) || (menu == 1))
+            yaris();
         rotateY(2 * PI / 3);
         translate(-2 * move, 0, 0);
         rotateY(2 * PI / 3);
-        finn();
-
+        if((menu == 0 && direction > 0) || (menu == 1 && direction < 0) || (menu == 2))
+            finn();
         hint(DISABLE_DEPTH_TEST); // 2D code starts here
         camera();
         noLights();
 
         fill(0, 50);
-        rect(0, 0, width * 2, height * 2);
+        rect(0, 0, width * 5, height * 5);
         textSize(20);
         fill(255);
         text(frameRate, 50, 50);
@@ -256,8 +261,8 @@ public class OOP extends Visual {
 
     public void yaris() {
         pushMatrix();
-        //translate(0,0, width/2);
-        //yaris.render();
+        translate(0,0, width/2);
+        yaris.render();
         popMatrix();
     }
 
