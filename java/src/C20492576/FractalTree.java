@@ -9,20 +9,26 @@ public class FractalTree extends PApplet {
     DynamicColour dc;
     FractalTree start;
 
+    Slider slider;
+
+    int treeCount;
     float amplitude;
+    int noBranches;
     float angle = 0;
 
     FractalTree[] branches;
 
-    
-    
-    public FractalTree(OOP tree, float amplitude, float angle, int noBranches) {
+    float rotateAngle;
+
+    public FractalTree(OOP tree, float amplitude, float angle, int noBranches, Colours cl, int treeCount) {
 
         this.tree = tree;
         this.amplitude = amplitude;
         this.angle = angle;
-        branch(noBranches);
-        dc = new DynamicColour(tree);
+        this.treeCount = treeCount;
+        this.noBranches = noBranches;
+        branch(noBranches, cl);
+        dc = new DynamicColour(tree, cl);
 
     }
 
@@ -45,7 +51,7 @@ public class FractalTree extends PApplet {
         tree.popMatrix();
     }
 
-    void branch(int noBranches) {
+    void branch(int noBranches, Colours cl) {
 
         if (noBranches > 0) {
 
@@ -54,35 +60,38 @@ public class FractalTree extends PApplet {
             branches = new FractalTree[2];
             tree.branchCount += 2;
 
-            branches[0] = new FractalTree(tree, amplitude / 1.4f, angle, noBranches - 2);
-            branches[1] = new FractalTree(tree, amplitude / 1.3f, -angle, noBranches - 2);
+            branches[0] = new FractalTree(tree, amplitude / tree.scrollVal, angle, noBranches - 2, cl, treeCount);
+            branches[1] = new FractalTree(tree, amplitude / tree.scrollVal, -angle, noBranches - 2, cl, treeCount);
 
         }
     }
 
-
-
     public void render() {
 
-    
-        
         tree.rotationCycle++;
 
-        //tree.rotate(OOP.map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4));
-        //println(tree.rotateTree);
-        tree.rotate(tree.rotateTree);
+        if (tree.changeVisual == 0)
+            if (tree.rotateDirection == 0)
+                rotateAngle = map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4);
 
-        for (int i = 0; i < 8; i++) {
-            // tree.resetMatrix();
-            tree.rotate(tree.PI / 4);
+        if (tree.rotateDirection == 1)
+            rotateAngle = map(-tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4);
+
+        tree.rotate(rotateAngle);
+
+        if (tree.changeVisual == 1)
+            tree.getMouseAngle();
+        tree.rotate(tree.rotationAngle);
+
+        for (int i = 0; i < treeCount; i++) {
+
+            tree.rotate(OOP.PI / (treeCount / 2));
             tree.pushMatrix();
 
             tree.translate(tree.width / 2, tree.height / 2);
 
             tree.branchCount = 0;
             tree.popMatrix();
-
-            // tree.stroke(tree.r,tree.g,tree.b);
 
             dc.changeColour(0.1f);
 

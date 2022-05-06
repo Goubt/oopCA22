@@ -1,5 +1,6 @@
 package C20402732;
 
+import C20492576.Colours;
 import C20492576.DynamicColour;
 import ie.assignment.OOP;
 
@@ -8,13 +9,12 @@ import processing.core.PVector;
 public class GOOBAvisual extends OOP {
 
     OOP oop;
+    DynamicColour gdc;
 
-    public GOOBAvisual(OOP oop) {
+    public GOOBAvisual(OOP oop, Colours gcl) {
         this.oop = oop;
-        dc = new DynamicColour(oop);
+        gdc = new DynamicColour(oop, gcl);
     }
-
-    DynamicColour dc;
 
     int hypno = 0;
     float hypnocontrol = 0;
@@ -42,16 +42,16 @@ public class GOOBAvisual extends OOP {
     }
 
     public void dolly(){
-        if(oop.lock == 0)
+        if(oop.lock == false)
             dolly = 0;
         if (oop.keyPressed) {
-            if ((oop.key == 'i' || oop.key == 'I') && oop.lock == 1 && dolly > -100) {
+            if ((oop.key == 'i' || oop.key == 'I') && oop.lock == true && dolly > -100) {
                     oop.camera1.dolly(-10);
                     dolly--;
             }
         }
         if (oop.keyPressed) {
-            if ((oop.key == 'k' || oop.key == 'K') && oop.lock == 1 && dolly < 100) {
+            if ((oop.key == 'k' || oop.key == 'K') && oop.lock == true && dolly < 100) {
                     oop.camera1.dolly(10);
                     dolly++;
             }
@@ -117,7 +117,7 @@ public class GOOBAvisual extends OOP {
         hypnogrow = map(diameter, limit, limit + 70, limit - 30, limit - 10);
         oop.strokeWeight(3);
         for (int i = 0; i < hypnogrow; i++) {
-            dc.changeColour(0.05f);
+            gdc.changeColour(0.1f);
             oop.rotate(radians((hypnocontrol % 360) + 180));
             oop.pushMatrix();
             oop.translate(0, (hypno % limit), -i);
