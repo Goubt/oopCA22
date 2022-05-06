@@ -70,18 +70,23 @@ public class FractalTree extends PApplet {
 
         tree.rotationCycle++;
 
-        if (tree.changeVisual == 0)
+        if (tree.changeVisual == true)
+        {
             if (tree.rotateDirection == 0)
-                rotateAngle = map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4);
+                rotateAngle = map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 6);
 
-        if (tree.rotateDirection == 1)
-            rotateAngle = map(-tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4);
+            if (tree.rotateDirection == 1)
+                rotateAngle = map(-tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 6);
 
-        tree.rotate(rotateAngle);
+            tree.rotate(rotateAngle);
 
-        if (tree.changeVisual == 1)
+        }
+
+        // mouse control
+        if (tree.changeVisual == false) {
             tree.getMouseAngle();
-        tree.rotate(tree.rotationAngle);
+            tree.rotate(tree.rotationAngle);
+        }
 
         for (int i = 0; i < treeCount; i++) {
 

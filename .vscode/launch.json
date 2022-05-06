@@ -1,11 +1,5 @@
 {
     "configurations": [
-        {
-            "type": "java",
-            "name": "Launch Main",
-            "request": "launch",
-            "mainClass": "ie.assignment.Main",
-            "projectName": "oopCA22_afe6864c"
-        }
+        
     ]
 }
