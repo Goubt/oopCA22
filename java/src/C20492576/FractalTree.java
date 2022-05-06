@@ -3,23 +3,20 @@ package C20492576;
 import ie.assignment.OOP;
 import processing.core.PApplet;
 
-public class FractalTree extends PApplet {
+public class FractalTree {
 
     OOP tree;
     DynamicColour dc;
     FractalTree start;
 
-    Slider slider;
-
     int treeCount;
     float amplitude;
     int noBranches;
     float angle = 0;
-
     FractalTree[] branches;
-
     float rotateAngle;
 
+    // fractal tree constructor
     public FractalTree(OOP tree, float amplitude, float angle, int noBranches, Colours cl, int treeCount) {
 
         this.tree = tree;
@@ -32,6 +29,7 @@ public class FractalTree extends PApplet {
 
     }
 
+    // assembles and displays
     void display() {
 
         tree.rotate(this.angle);
@@ -66,28 +64,31 @@ public class FractalTree extends PApplet {
         }
     }
 
+    // assembles trees together
     public void render() {
 
         tree.rotationCycle++;
 
+        // consistent rotation
         if (tree.changeVisual == true)
         {
             if (tree.rotateDirection == 0)
-                rotateAngle = map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 6);
+                rotateAngle = OOP.map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 6);
 
             if (tree.rotateDirection == 1)
-                rotateAngle = map(-tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 6);
+                rotateAngle = OOP.map(-tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 6);
 
             tree.rotate(rotateAngle);
 
         }
 
-        // mouse control
+        // mouse control rotation
         if (tree.changeVisual == false) {
             tree.getMouseAngle();
             tree.rotate(tree.rotationAngle);
         }
 
+        // rotates trees around centre point and applies colour
         for (int i = 0; i < treeCount; i++) {
 
             tree.rotate(OOP.PI / (treeCount / 2));
