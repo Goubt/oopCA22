@@ -4,13 +4,17 @@ Names: Aleksey Makarevich, Finn Maguire, Yaroslav Hrabas
 
 Student Numbers: C20402732, C20492576, C20394791
 
-Songs: Poison, Gummi Bear Song, DARE - Gorrilaz
+Songs: Poison, Gummi Bear Song, DARE
 
 # Description of the assignment
 Our assignment consists of a rotating menu. This was done as a challenge, seeing if we could utilise the camera to move around within the 3d space.
 The user "stands" in the centre of the menu, able to turn the view point between the three visualations while it changes the song to match the visualisation.
 
+## Aleksey
 
+## Yaris
+
+## Finn
 
 # Instructions
 Each menu option has its own controls that can manipulate features in each visualations.
@@ -41,7 +45,6 @@ With camera locked you can now
 ### Aleksey 
 
 ### Finn
-
 
 ### Yaris
 
