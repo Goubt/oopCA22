@@ -45,12 +45,8 @@ public class OOP extends Visual {
     int menu = 0;
     String[] Songs = { "POISON.mp3", "GUMMY.mp3", "DARE.mp3" };
 
-    int start = 90;
-
     int screenBrightness = 0;
     Boolean lockScreenBrightness = true;
-
-    public int spheresize = 0;
 
     public static ParticleSystem tlps;
     public static ParticleSystem trps;
@@ -112,10 +108,10 @@ public class OOP extends Visual {
 
         if (keyPressed) {
             if ((key == 'l' || key == 'L') && menu == 0 && direction == 0) {
-                if(lock == false)
-                lock = true;
-                else if(lock == true)
-                lock = false;
+                if (lock == false)
+                    lock = true;
+                else if (lock == true)
+                    lock = false;
                 camera1.jump(width / 2, height / 2, 0);
             }
         }
@@ -176,7 +172,7 @@ public class OOP extends Visual {
     }
 
     public void settings() {
-        //size(1200, 1000, P3D);
+        // size(1200, 1000, P3D);
         fullScreen(P3D);
     }
 
@@ -230,27 +226,29 @@ public class OOP extends Visual {
 
         translate(width / 2, height / 2, -width);
         pushMatrix();
-        if((menu == 1 && direction > 0) || (menu == 2 && direction < 0) || (menu == 0))
+
+        if ((menu == 1 && direction > 0) || (menu == 2 && direction < 0) || (menu == 0))
             gooba();
+
         popMatrix();
         translate(move, 0, width + (width / 2));
         rotateY(-2 * PI / 3);
-        if((menu == 2 && direction > 0) || (menu == 0 && direction < 0) || (menu == 1))
+
+        if ((menu == 2 && direction > 0) || (menu == 0 && direction < 0) || (menu == 1))
             yaris();
+
         rotateY(2 * PI / 3);
         translate(-2 * move, 0, 0);
         rotateY(2 * PI / 3);
-        if((menu == 0 && direction > 0) || (menu == 1 && direction < 0) || (menu == 2))
+
+        if ((menu == 0 && direction > 0) || (menu == 1 && direction < 0) || (menu == 2))
             finn();
+
         hint(DISABLE_DEPTH_TEST); // 2D code starts here
         camera();
         noLights();
-
         fill(screenBrightness, 50);
         rect(0, 0, (width * 2) + 10, (height * 2) + 10);
-        textSize(20);
-        fill(255);
-        text(frameRate, 50, 50);
         hint(ENABLE_DEPTH_TEST); // 2D code ends here
 
         if (direction > 0) {
@@ -266,7 +264,7 @@ public class OOP extends Visual {
 
     public void yaris() {
         pushMatrix();
-        translate(0,0, width/2);
+        translate(0, 0, width / 2);
         yaris.render();
         popMatrix();
     }
@@ -301,13 +299,6 @@ public class OOP extends Visual {
         changeAudio(Song);
         ShiftUp();
     }
-
-    // public int HatBeat(Boolean type, int i) {
-    // if (type == true)
-    // i += 2;
-
-    // return i;
-    // }
 
     public void changeBackground(Boolean b) {
 

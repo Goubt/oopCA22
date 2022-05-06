@@ -9,8 +9,6 @@ public class FractalTree extends PApplet {
     DynamicColour dc;
     FractalTree start;
 
-    Slider slider;
-
     int treeCount;
     float amplitude;
     int noBranches;
