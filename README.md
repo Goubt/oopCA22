@@ -56,17 +56,22 @@ With camera locked you can now
 
 This java class is used to create and display tree fractals circularly around a point.
 The class's constructor reads in variables which determines the amplitude, angles, number of branches and the amount of trees for the visual.
+
 ![image](https://user-images.githubusercontent.com/98547854/167218700-7e1b7793-347b-4853-99d0-ebf494c54ed5.png)
+
 The constructor also calls the branch method which creates one fractal tree.
 
 Inside the method the angles for the branches are determined by the audios averaged amplitude using PApplets map function. 
 The method utlises recursion to create branches which are connected to its parent branch using arrays.
+
 ![image](https://user-images.githubusercontent.com/98547854/167220463-66aecbf1-7463-4432-80ff-7046fe7b547b.png)
 
 
 The tree is displayed on screen by calling the render() method which inside calls the display() method which draws each individual tree.
 Inside render() is where the position of the trees are determined using rotate() and translate().  
+
 ![image](https://user-images.githubusercontent.com/98547854/167220492-da39f0ff-4653-404e-bfe4-7ced60905c40.png)
+
 The visual is then either spun using a default method or using the users cursor.
 
 ### Colours & DynamicColours
@@ -79,8 +84,11 @@ RGB values are assigned at random which can allow for a different colour scheme 
 
 ![image](https://user-images.githubusercontent.com/98547854/167221071-7c04d8e5-4daa-4a50-a47f-c75ac934e788.png)
 
+Inside the DynamicColours class the RBG values are changed at a rate depending on the speed variable. 
+Every frame the values are either incremented or decremented by 1 depending on whether the value is coming from the lowest value (0) or the max (255)
+This provides a smooth changing colour scheme for an object it is decided to be used on.
 
-
+![image](https://user-images.githubusercontent.com/98547854/167221617-11ed54c2-94c3-47b7-ba5d-6469fb6bc8d8.png)
 
 
 
