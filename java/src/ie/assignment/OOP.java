@@ -36,8 +36,6 @@ public class OOP extends Visual {
     public float mouseVal, mouseRotation, easing = 0.07f;
     public float scrollVal = 1.5f;
 
-
-
     static final int FADE = 2500;
 
     int Choice = 4;
@@ -73,8 +71,9 @@ public class OOP extends Visual {
                 menu--;
 
             print(menu);
-
             loadMusic(Songs[menu]);
+            resetFractal();
+
         }
 
         if (keyCode == RIGHT && direction == 0) {
@@ -87,8 +86,9 @@ public class OOP extends Visual {
                 menu++;
 
             print(menu);
-
             loadMusic(Songs[menu]);
+            resetFractal();
+            
         }
 
         if (keyCode == UP && direction == 0) {
@@ -107,12 +107,10 @@ public class OOP extends Visual {
 
             Choice = menu;
             getAudioPlayer().rewind();
-
         }
 
         if (key == BACKSPACE) {
             Choice = 4;
-
             getAudioPlayer().rewind();
         }
 
@@ -272,12 +270,12 @@ public class OOP extends Visual {
         fill(255);
         textSize(30);
 
-        if(hideMenu == false) {
+        if (hideMenu == false) {
             text("UP/DOWN  |  Branch Count: " + noBranches, -(width / 2) - 15, -(height / 2) - 100);
             text("SCROLL   |  Amplitude Modifier: " + Math.round(scrollVal * 100.0f) / 100.0f, -(width / 2) + 20,
                     -(height / 2) - 50);
         }
-        
+
         fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, noBranches,
                 clFinn, treeCount);
         fv.render();
@@ -342,5 +340,10 @@ public class OOP extends Visual {
             rotationAngle += PI * 2;
         rotationAngle += (mouseVal - rotationAngle) * easing;
 
+    }
+
+    public void resetFractal() {
+        scrollVal = 1.5f;
+        noBranches = 15;
     }
 }
