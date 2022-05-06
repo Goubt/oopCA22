@@ -38,7 +38,6 @@ public class GOOBAvisual extends OOP {
         centre();
         poison();
         oop.popMatrix();
-        
     }
 
     public void dolly(){
