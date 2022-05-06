@@ -2,13 +2,13 @@ package ie.assignment;
 
 import C20402732.*;
 import C20492576.*;
-import C20492576.FractalTree;
 import damkjer.ocd.*;
 
 import ddf.minim.analysis.BeatDetect;
 
 import processing.core.PImage;
 import processing.core.PVector;
+import processing.event.MouseEvent;
 
 public class OOP extends Visual {
     float rotation = 0;
@@ -17,21 +17,26 @@ public class OOP extends Visual {
 
     GOOBAvisual gooba;
 
-
     // fractal tree
     FractalTree fv;
+    int treeCount = 8;
     public float branchCount = 0;
     public float rotationCycle = 0;
     public int changeVisual = 0;
     public int rotateDirection = 0;
+    public int noBranches = 15;
 
     // colour
     public Colours clFinn;
 
-    // mouse tracking
+    // input tracking
+    Boolean hideMenu = true;
     PVector mouseLocation = new PVector();
-    public float rotationAngle = 0; 
+    public float rotationAngle = 0;
     public float mouseVal, mouseRotation, easing = 0.07f;
+    public float scrollVal = 1.5f;
+
+
 
     static final int FADE = 2500;
 
@@ -86,6 +91,18 @@ public class OOP extends Visual {
             loadMusic(Songs[menu]);
         }
 
+        if (keyCode == UP && direction == 0) {
+            if (!(noBranches == 20))
+                noBranches += 1;
+
+        }
+
+        if (keyCode == DOWN && direction == 0) {
+            if (!(noBranches == 0))
+                noBranches -= 1;
+
+        }
+
         if (key == ENTER) {
 
             Choice = menu;
@@ -103,17 +120,15 @@ public class OOP extends Visual {
             getAudioPlayer().cue(110000);
         }
 
-        
-
         if (keyCode == 'X') {
-            if (rotateDirection == 0) 
+            if (rotateDirection == 0)
                 rotateDirection = 1;
             else
                 rotateDirection = 0;
         }
 
         if (keyCode == 'C') {
-            if(changeVisual == 0)
+            if (changeVisual == 0)
                 changeVisual = 1;
 
             else
@@ -121,6 +136,35 @@ public class OOP extends Visual {
 
         }
 
+        if (keyCode == 'H') {
+            if (hideMenu == true)
+                hideMenu = false;
+
+            else
+                hideMenu = true;
+
+        }
+    }
+
+    public void mouseWheel(MouseEvent mouse) {
+        float mouseWheel = mouse.getCount();
+
+        if (mouseWheel == 1.0f) {
+            if (scrollVal < 1.5f) {
+                scrollVal += 0.1f;
+                println(scrollVal);
+            }
+
+        }
+
+        else if (mouseWheel == -1.0f) {
+
+            if (scrollVal > -0.3f) {
+                scrollVal -= 0.1f;
+                println(scrollVal);
+            }
+
+        }
     }
 
     public void settings() {
@@ -129,6 +173,7 @@ public class OOP extends Visual {
     }
 
     public void setup() {
+
         startMinim();
         loadAudio("POISON.mp3");
         getAudioPlayer().play();
@@ -163,7 +208,9 @@ public class OOP extends Visual {
     public void draw() {
 
         calculateAverageAmplitude();
+
         changeBackground();
+
         textSize(100);
         textAlign(CENTER);
 
@@ -191,7 +238,7 @@ public class OOP extends Visual {
             text("<SELECT>", width / 2, (height) - 50);
         }
 
-        fill(0, 60);
+        fill(0, 50);
         rect(0, 0, width * 2, height * 2);
 
         hint(ENABLE_DEPTH_TEST); // 2D code ends here
@@ -222,7 +269,17 @@ public class OOP extends Visual {
     public void finn() {
 
         stroke(255);
-        fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, 15, clFinn);
+        fill(255);
+        textSize(30);
+
+        if(hideMenu == false) {
+            text("UP/DOWN  |  Branch Count: " + noBranches, -(width / 2) - 15, -(height / 2) - 100);
+            text("SCROLL   |  Amplitude Modifier: " + Math.round(scrollVal * 100.0f) / 100.0f, -(width / 2) + 20,
+                    -(height / 2) - 50);
+        }
+        
+        fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, noBranches,
+                clFinn, treeCount);
         fv.render();
     }
 
