@@ -71,10 +71,10 @@ public class FractalTree extends PApplet {
         if (tree.changeVisual == true)
         {
             if (tree.rotateDirection == 0)
-                rotateAngle = map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 6);
+                rotateAngle = map(tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4);
 
             if (tree.rotateDirection == 1)
-                rotateAngle = map(-tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 6);
+                rotateAngle = map(-tree.rotationCycle % 360, 0, 360, 0, OOP.PI * 4);
 
             tree.rotate(rotateAngle);
 

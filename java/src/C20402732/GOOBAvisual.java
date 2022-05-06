@@ -45,13 +45,13 @@ public class GOOBAvisual extends OOP {
         if(oop.lock == false)
             dolly = 0;
         if (oop.keyPressed) {
-            if ((oop.key == 'i' || oop.key == 'I') && oop.lock == true && dolly > -100) {
+            if ((oop.key == 'i' || oop.key == 'I') && oop.lock == true && dolly > -200) {
                     oop.camera1.dolly(-10);
                     dolly--;
             }
         }
         if (oop.keyPressed) {
-            if ((oop.key == 'k' || oop.key == 'K') && oop.lock == true && dolly < 100) {
+            if ((oop.key == 'k' || oop.key == 'K') && oop.lock == true && dolly < 200) {
                     oop.camera1.dolly(10);
                     dolly++;
             }

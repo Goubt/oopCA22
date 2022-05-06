@@ -61,6 +61,7 @@ public class OOP extends Visual {
 
     public void keyPressed() {
         if (keyCode == LEFT && direction == 0 && lock == false) {
+            resetTree();
             direction -= 120;
 
             if (menu == 0)
@@ -73,6 +74,7 @@ public class OOP extends Visual {
         }
 
         if (keyCode == RIGHT && direction == 0 && lock == false) {
+            resetTree();
             direction += 120;
 
             if (menu == 2)
@@ -172,15 +174,15 @@ public class OOP extends Visual {
     }
 
     public void settings() {
-        // size(1200, 1000, P3D);
-        fullScreen(P3D);
+        size(1920, 1080, P3D);
+        //fullScreen(P3D);
     }
 
     public void setup() {
         startMinim();
         loadAudio("POISON.mp3");
         getAudioPlayer().play();
-        getAudioPlayer().loop();
+        
 
         colorMode(RGB);
 
@@ -281,7 +283,7 @@ public class OOP extends Visual {
                     -(height / 2) - 50);
         }
 
-        fv = new FractalTree(this, OOP.map(smoothedAmplitude, 0, .5f, -height / 15f, -height / 4f), 0, noBranches,
+        fv = new FractalTree(this, OOP.map(smoothedAmplitude + 0.3f, 0, .5f, -height / 15f, -height / 4f), 0, noBranches,
                 clFinn, treeCount);
         fv.render();
 
@@ -298,6 +300,7 @@ public class OOP extends Visual {
         Shiftdown();
         changeAudio(Song);
         ShiftUp();
+        getAudioPlayer().loop();
     }
 
     public void changeBackground(Boolean b) {
@@ -347,6 +350,11 @@ public class OOP extends Visual {
 
         rotationAngle += (mouseVal - rotationAngle) * easing;
 
+    }
+
+    public void resetTree() {
+        noBranches = 15;
+        scrollVal = 1.5f;
     }
 
 }

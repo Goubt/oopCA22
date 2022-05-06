@@ -24,6 +24,7 @@ public abstract class Visual extends PApplet
 
 	int FADE = 2500;
 	
+	
 	public void startMinim() 
 	{
 		minim = new Minim(this);
@@ -90,10 +91,12 @@ public abstract class Visual extends PApplet
 	{
 		ap = minim.loadFile(filename, frameSize);
 		ab = ap.mix;
+		
 	}
 
 	public void changeAudio(String Song){
 		ap = minim.loadFile(Song, frameSize);
+		ap.loop();
 	}
 
 	public void Shiftdown() {
